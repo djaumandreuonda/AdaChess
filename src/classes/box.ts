@@ -1,13 +1,13 @@
 import {Coordinate} from "./coordinate";
 import {colour} from "./enums";
 class Box {
-    //coordinate: Coordinate;
+    coordinate: Coordinate;
     occupied: boolean;
     colour: colour;
     
-    constructor(colour: colour) {
+    constructor(colour: colour, coordinate:Coordinate) {
         this.occupied = false;
-        //this.coordinate = coordinate;
+        this.coordinate = coordinate;
         this.colour = colour;
     }
     isOccupied(){
@@ -25,6 +25,3 @@ class Box {
 }
 
 export{Box}; 
-interface Boxes {
-    
-}
