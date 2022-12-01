@@ -1,0 +1,41 @@
+@startuml classes
+
+title Classes - Class Diagram
+
+
+class Coordinate {
+  +Int x
+  +Int y
+}
+
+class Box {
+  +Coordinate coordinate
+  +boolean occupied
+  +Colour colour
+  +Piece[] piece
+  +isOccupied()
+  +reset()
+  +setOccupied()
+  +getColour()
+}
+
+class Board{
+  +Box[] boxes
+  +Int size
+  +printBoard()
+}
+
+class Piece {
+  +Colour:colour
+  +Coordinate:coordinate
+  +Type:type
+  +getColour()
+  +getType()
+}
+class Pawn implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+
+@enduml
