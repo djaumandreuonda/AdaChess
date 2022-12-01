@@ -1,8 +1,8 @@
 import {colour, type} from "./enums";
-import {Box} from "./box";
+import {Coordinate} from "./coordinate";
 class Piece {
     colour:colour;
-    boxPos:Box;
+    coordinate:Coordinate;
     type:type;
     constructor(colour:colour){
       this.colour = colour;
@@ -10,14 +10,8 @@ class Piece {
     getColour(){
       return this.colour;
     }
-    getBoxPos(){
-      return this.boxPos;
-    }
     getType(){
       return this.type
-    }
-    setBoxPos(box:Box){
-      this.boxPos = box;
     }
   }
 
