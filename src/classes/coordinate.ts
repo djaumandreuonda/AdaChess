@@ -1,14 +1,14 @@
-import {width} from "./enums";
+import {x} from "./enums";
 class Coordinate {
-    height: number;
-    width: width;
+    y: number;
+    x: x;
    
-    constructor(height:number, width: width) {
-      if (height > 8 || height < 1){
+    constructor(y:number, x: x) {
+      if (y > 8 || y < 1){
         throw new Error('Forbidden');
       }
-      this.width = width;
-      this.height = height;
+      this.x = x;
+      this.y = y;
     }
 }
 

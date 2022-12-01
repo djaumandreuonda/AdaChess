@@ -1,26 +1,30 @@
 import {Box} from "./box";
 import { Coordinate } from "./coordinate";
-import {colour, width} from "./enums";
+import {colour, x} from "./enums";
 class Board {
+    boxes: Box[][]; // create an empty array 8x8 which expects box object
     size: number;
-    boxes: Box[][]; // create an empty 2d array expecting box type
     constructor() {
       this.boxes = [];
-      this.size = 8; 
+      this.size = 8;
+      let rows:number = this.size;
       for (var i: number = 0; i < this.size; i++) {
         this.boxes[i] = [];
-        let currentColour:colour = (i%2 ==0)? colour.WHITE: colour.BLACK;
-        for (var j: number = 0; j < this.size; j++) {  
-          this.boxes[i][j] = new Box(currentColour, new Coordinate( i+1 , Object.keys(width)[j])); // I'm giving it as a string, not as the name
-          currentColour = (currentColour == colour.WHITE)? colour.BLACK: colour.WHITE;
+        let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.BLACK;
+        for (var j: number = 0; j < this.size; j++) {
+          this.boxes[i][j] = new Box(
+            currentColour,
+            new Coordinate(rows, Object.keys(x)[j])
+          );
+          currentColour =
+            currentColour == colour.WHITE ? colour.BLACK : colour.WHITE;
         }
+        rows --;
       }
-    }
-    initialiseBoard(){
-        // Sets the pieces at the correct coordinates
     }
     printBoard() {
       for (var i: number = 0; i < 8; i++) {
+        console.log(i + 1);
         for (var j: number = 0; j < 8; j++) {
           console.log(this.boxes[i][j]);
         }

@@ -1,32 +1,32 @@
 import {Coordinate} from "./coordinate";
-import {width} from "./enums"
+import {x} from "./enums"
 describe('1. Unit test on coordinate', () => {
-    // describe("1.1 creating cordinate with a height out of range (high)", () => {
+    // describe("1.1 creating cordinate with a y out of range (high)", () => {
     //     it('should throw an error', () => {
-    //         let coordinate = new Coordinate(1, width.a);  
+    //         let coordinate = new Coordinate(1, x.a);  
     //         expect coordinate   
     //       })
     // }),
-    // describe("1.2 creating cordinate with a height out of range (low)", () => {
+    // describe("1.2 creating cordinate with a y out of range (low)", () => {
     //     it('should throw an error', () => {
-    //         let coordinate = new Coordinate(1, width.a);     
+    //         let coordinate = new Coordinate(1, x.a);     
     //       })
     // })
-    // describe("1.3 creating cordinate with a height out of range (high)", () => {
+    // describe("1.3 creating cordinate with a y out of range (high)", () => {
     //     it('should throw an error', () => {
-    //         let coordinate = new Coordinate(1, width.a);     
+    //         let coordinate = new Coordinate(1, x.a);     
     //       })
     // }),
-    // describe("1.4 creating cordinate with a height out of range (low)", () => {
+    // describe("1.4 creating cordinate with a y out of range (low)", () => {
     //     it('should throw an error', () => {
-    //         let coordinate = new Coordinate(1, width.a);     
+    //         let coordinate = new Coordinate(1, x.a);     
     //       })
     // })
     describe("1.5 creating cordinate within range works", () => {
         it('should throw an error', () => {
-            let coordinate = new Coordinate(1, width.a);  
-            expect(coordinate.height).toBe(1);
-            expect(coordinate.width).toBe(width.a);
+            let coordinate = new Coordinate(1, x.a);  
+            expect(coordinate.y).toBe(1);
+            expect(coordinate.x).toBe(x.a);
           })
     })
 
