@@ -7,19 +7,14 @@ class Board {
     constructor() {
       this.boxes = [];
       this.size = 8;
-      let rows:number = this.size;
       for (var i: number = 0; i < this.size; i++) {
         this.boxes[i] = [];
         let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.BLACK;
         for (var j: number = 0; j < this.size; j++) {
-          this.boxes[i][j] = new Box(
-            currentColour,
-            new Coordinate(rows, Object.keys(x)[j])
-          );
+          this.boxes[i][j] = new Box(currentColour, new Coordinate(i, j));
           currentColour =
             currentColour == colour.WHITE ? colour.BLACK : colour.WHITE;
         }
-        rows --;
       }
     }
     printBoard() {
