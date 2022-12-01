@@ -1,5 +1,6 @@
 import {Coordinate} from "./coordinate";
 import {colour} from "./enums";
+import {Piece} from "./piece";
 class Box {
     coordinate: Coordinate;
     occupied: boolean;
@@ -16,7 +17,7 @@ class Box {
     reset(){
         this.occupied = false; 
     }
-    setOccupied(occupied: boolean){
+    setOccupied(occupied: boolean, piece: Piece){
         this.occupied = occupied;
     }
     getColour(){
