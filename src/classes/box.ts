@@ -19,13 +19,20 @@ class Box {
         this.occupied = false; 
         this.piece = []; 
     }
-    setOccupied(occupied: boolean, piece: Piece){
-        if(this.occupied){
+    setOccupied(occupied: boolean, piece: Piece, kill:boolean = false){
+        if(this.occupied && !kill){
             throw new Error("Box occupied")
+        }
+        if(kill){
+            this.piece[0].coordinate = new Coordinate(-1,-1);
+            this.piece = [];
+            console.log("A piece has been killed")
         }
         piece.coordinate = this.coordinate;
         this.occupied = occupied;
         this.piece.push(piece);
+        console.log(piece.type + " has been added to this box")
+        console.log(this.coordinate);
     }
     getColour(){
         return this.colour;

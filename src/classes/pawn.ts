@@ -47,6 +47,29 @@ class Pawn extends Piece {
             } 
          }    
         return this.possibleMoves;
-      }
+    }
+    private isValidMove(finalPos:Box) {
+        let valid = this.possibleMoves.some(element => {
+            if (element.coordinate === finalPos.coordinate) {
+              return true;
+            } else {
+                return false;
+            }});
+        return valid; 
+    }
+    move(board:Board, finalPos:Box){
+        this.getPossibleMoves(board); 
+        if (this.isValidMove(finalPos)){
+            board.boxes[this.coordinate.x][this.coordinate.y].reset();
+            board.boxes[finalPos.coordinate.x][finalPos.coordinate.y].setOccupied(true, this, true)
+        } else {
+            console.log("We couldnt move it sir")
+        }
+
+        // -COMPLETED- Should be one of the available moves stored in the array
+        // Should reset the current box
+        // Should update the next box
+    }
+
   }
 export {Pawn}

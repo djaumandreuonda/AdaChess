@@ -4,7 +4,7 @@ import {Board} from "./board";
 import {colour, type} from "./enums";
 import { Coordinate } from "./coordinate";
 describe('1. Unit test on pawn', () => {
-    describe("Black pawn tests", () => {
+    describe.skip("Black pawn tests", () => {
         describe("1.1 Black pawn located in 10", () => {
             it('should be able to move to 20,30', () => {
                 let board = new Board();
@@ -80,7 +80,7 @@ describe('1. Unit test on pawn', () => {
               })
         })
     })
-    describe("White pawn tests", () => {
+    describe.skip("White pawn tests", () => {
         describe("1.1 White pawn located in 60", () => {
             it('should be able to move to 40,50', () => {
                 let board = new Board();
@@ -94,5 +94,24 @@ describe('1. Unit test on pawn', () => {
               })
         })
     })
+    describe("Moving black pawn", () => {
+        describe("1.1 White pawn located in 31", () => {
+            it('should be able to move to 41', () => {
+                let board = new Board();
+                let pawn = new Pawn(colour.BLACK);
+                let pawnToBeEaten = new Pawn(colour.WHITE);
 
+                let finalPos = board.boxes[4][1];
+                let eatPos = board.boxes[4][0];
+                board.boxes[3][1].setOccupied(true, pawn);
+                board.boxes[4][0].setOccupied(true, pawnToBeEaten);
+                
+                pawn.move(board,eatPos);
+                //expect(board.boxes[3][1].occupied).toBeFalsy();
+                //expect(board.boxes[4][1].occupied).toBeTruthy();
+                console.log(board.boxes[4][0]);
+                console.log(board.boxes[3][1]);
+              })
+        })
+    })
   });
