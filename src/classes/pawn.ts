@@ -45,7 +45,7 @@ class Pawn extends Piece {
                   }
                break; 
             } 
-         }    
+        }    
         return this.possibleMoves;
     }
     private isValidMove(finalPos:Box) {
@@ -61,14 +61,13 @@ class Pawn extends Piece {
         this.getPossibleMoves(board); 
         if (this.isValidMove(finalPos)){
             board.boxes[this.coordinate.x][this.coordinate.y].reset();
-            board.boxes[finalPos.coordinate.x][finalPos.coordinate.y].setOccupied(this, true)
+            board.boxes[finalPos.coordinate.x][finalPos.coordinate.y].setOccupied(this, true);
+            if(finalPos.coordinate.x == 0 || finalPos.coordinate.x == 7){
+                console.log("Transform to another piece");
+            }
         } else {
-            console.log("We couldnt move it sir")
+            console.log("We couldnt move it")
         }
-
-        // -COMPLETED- Should be one of the available moves stored in the array
-        // Should reset the current box
-        // Should update the next box
     }
 
   }
