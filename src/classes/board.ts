@@ -1,19 +1,19 @@
 import {Box} from "./box";
 import { Coordinate } from "./coordinate";
-import {colour, x} from "./enums";
+import {colour} from "./enums";
 class Board {
-    boxes: Box[][]; // create an empty array 8x8 which expects box object
+    boxes: Box[][]; // define a 2d array which expects box objects
     size: number;
     constructor() {
       this.boxes = [];
-      this.size = 8;
+      this.size = 8; // size of the board is 8x8
       for (var i: number = 0; i < this.size; i++) {
         this.boxes[i] = [];
-        let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.BLACK;
+        let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.BLACK; // current colour is white if position is even, black if odd
         for (var j: number = 0; j < this.size; j++) {
-          this.boxes[i][j] = new Box(currentColour, new Coordinate(i, j));
+          this.boxes[i][j] = new Box(currentColour, new Coordinate(i, j)); // generate boxes with correct colour assigned
           currentColour =
-            currentColour == colour.WHITE ? colour.BLACK : colour.WHITE;
+            currentColour == colour.WHITE ? colour.BLACK : colour.WHITE; // alternate colours during creation of a row
         }
       }
     }
@@ -25,6 +25,5 @@ class Board {
         }
       }
     }
-  }
-// Should create an array which holds boxes (8x8) and assigns the correct colour to each & gives them the correct coordinate
+}
 export {Board}
