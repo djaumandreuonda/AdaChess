@@ -1,1 +1,3 @@
-<app-box></app-box>
+<ng-template [ngIf]="this.boxes"><div>Content to render when condition is
+    true.
+<div *ngFor="let item of this.boxes; index as i;"><div *ngFor="let sub-item of item; index as j;">Box {{i}} {{j}}<app-box [box]="this.boxes[i][j]"></app-box></div></div></div></ng-template>

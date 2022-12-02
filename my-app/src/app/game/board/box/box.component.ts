@@ -1,20 +1,20 @@
-import {Component, ElementRef, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, Input} from '@angular/core';
+import { Box } from '../model/box.model';
+import {colour } from "src/app/shared/enums/colour.enum";
+import { Coordinate } from '../model/coordinate.model';
 @Component({
   selector: 'app-box',
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.css']
 })
 export class BoxComponent {
-  colour:string; 
+  @Input() box!: Box;
+
   width = 50;
   height = 50;
   constructor() {
-    this.colour = "white";
-   }
+  }
 
   ngOnInit(): void {
   }
-  // onChange(event){
-  //   console.log("Event = ", event);
-  // }
 }
