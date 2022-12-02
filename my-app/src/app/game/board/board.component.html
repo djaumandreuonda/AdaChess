@@ -1,8 +1,6 @@
-<ng-template [ngIf]="this.boxes"><div>Content to render when condition is
-    true.</div>
-<div *ngFor="let item of this.boxes; index as i;">
-    <div *ngFor="let sub-item of item; index as j;">
-        <app-box [box]="this.boxes[i][j]"></app-box>
+
+<div *ngIf="this.boxes" class="board">
+    <div class="row" *ngFor="let item of this.boxes; index as i;">
+            <app-box class="box" *ngFor="let sub-item of item; index as j;" [box]="this.boxes[i][j]"></app-box>
     </div>
 </div>
-</ng-template>
