@@ -1,7 +1,5 @@
 import {Component, ElementRef, OnInit, Input} from '@angular/core';
 import { Box } from '../model/box.model';
-import {colour } from "src/app/shared/enums/colour.enum";
-import { Coordinate } from '../model/coordinate.model';
 @Component({
   selector: 'app-box',
   templateUrl: './box.component.html',
