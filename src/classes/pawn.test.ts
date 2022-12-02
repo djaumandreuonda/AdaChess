@@ -9,7 +9,7 @@ describe('1. Unit test on pawn', () => {
             it('should be able to move to 20,30', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.BLACK);
-                board.boxes[1][0].setOccupied(true, pawn);
+                board.boxes[1][0].setOccupied(pawn);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
     
@@ -21,7 +21,7 @@ describe('1. Unit test on pawn', () => {
             it('should be able to move to 41', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.BLACK);
-                board.boxes[3][1].setOccupied(true,pawn);
+                board.boxes[3][1].setOccupied(pawn);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
     
@@ -35,9 +35,9 @@ describe('1. Unit test on pawn', () => {
                 let pawn = new Pawn(colour.BLACK);
                 let pawn1 = new Pawn(colour.WHITE); 
                 let pawn2 = new Pawn(colour.WHITE); 
-                board.boxes[3][1].setOccupied(true, pawn);
-                board.boxes[4][2].setOccupied(true, pawn1);
-                board.boxes[4][0].setOccupied(true, pawn2);
+                board.boxes[3][1].setOccupied(pawn);
+                board.boxes[4][2].setOccupied(pawn1);
+                board.boxes[4][0].setOccupied(pawn2);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
     
@@ -52,8 +52,8 @@ describe('1. Unit test on pawn', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.BLACK);
                 let pawn1 = new Pawn(colour.WHITE); 
-                board.boxes[1][0].setOccupied(true, pawn);
-                board.boxes[2][1].setOccupied(true, pawn1);
+                board.boxes[1][0].setOccupied(pawn);
+                board.boxes[2][1].setOccupied(pawn1);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
 
@@ -68,8 +68,8 @@ describe('1. Unit test on pawn', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.BLACK);
                 let pawn1 = new Pawn(colour.WHITE); 
-                board.boxes[1][7].setOccupied(true, pawn);
-                board.boxes[2][6].setOccupied(true, pawn1);
+                board.boxes[1][7].setOccupied(pawn);
+                board.boxes[2][6].setOccupied(pawn1);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
 
@@ -85,7 +85,7 @@ describe('1. Unit test on pawn', () => {
             it('should be able to move to 40,50', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.WHITE);
-                board.boxes[6][0].setOccupied(true, pawn);
+                board.boxes[6][0].setOccupied(pawn);
     
                 let possibleMoves = pawn.getPossibleMoves(board);
                 console.log(possibleMoves);
@@ -103,8 +103,8 @@ describe('1. Unit test on pawn', () => {
 
                 let finalPos = board.boxes[4][1];
                 let eatPos = board.boxes[4][0];
-                board.boxes[3][1].setOccupied(true, pawn);
-                board.boxes[4][0].setOccupied(true, pawnToBeEaten);
+                board.boxes[3][1].setOccupied(pawn);
+                board.boxes[4][0].setOccupied(pawnToBeEaten);
                 
                 pawn.move(board,eatPos);
                 //expect(board.boxes[3][1].occupied).toBeFalsy();

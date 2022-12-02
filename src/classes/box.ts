@@ -19,7 +19,7 @@ class Box {
         this.occupied = false; 
         this.piece = []; 
     }
-    setOccupied(occupied: boolean, piece: Piece, kill:boolean = false){
+    setOccupied(piece: Piece, kill:boolean = false){
         if(this.occupied && !kill){
             throw new Error("Box occupied")
         }
@@ -29,7 +29,7 @@ class Box {
             console.log("A piece has been killed")
         }
         piece.coordinate = this.coordinate;
-        this.occupied = occupied;
+        this.occupied = true;
         this.piece.push(piece);
         console.log(piece.type + " has been added to this box")
         console.log(this.coordinate);

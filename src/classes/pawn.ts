@@ -61,7 +61,7 @@ class Pawn extends Piece {
         this.getPossibleMoves(board); 
         if (this.isValidMove(finalPos)){
             board.boxes[this.coordinate.x][this.coordinate.y].reset();
-            board.boxes[finalPos.coordinate.x][finalPos.coordinate.y].setOccupied(true, this, true)
+            board.boxes[finalPos.coordinate.x][finalPos.coordinate.y].setOccupied(this, true)
         } else {
             console.log("We couldnt move it sir")
         }
