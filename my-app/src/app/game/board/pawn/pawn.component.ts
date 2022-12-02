@@ -1,8 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Piece } from '../model/piece.model';
-
-import { colour } from 'src/app/shared/enums/colour.enum';
-import { type } from 'src/app/shared/enums/type.enum';
 import { Pawn } from '../model/pawn.model';
 
 @Component({
@@ -12,5 +8,4 @@ import { Pawn } from '../model/pawn.model';
 })
 export class PawnComponent {
   @Input() pawnData!:Pawn;
-
 }

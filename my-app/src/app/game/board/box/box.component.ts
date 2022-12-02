@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, Input} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import { Box } from '../model/box.model';
 @Component({
   selector: 'app-box',
@@ -7,12 +7,6 @@ import { Box } from '../model/box.model';
 })
 export class BoxComponent {
   @Input() box!: Box;
-
   width = 50;
   height = 50;
-  constructor() {
-  }
-
-  ngOnInit(): void {
-  }
 }

@@ -13,7 +13,5 @@ export class GameComponent {
     this.piece = new Pawn(colour.BLACK);
   }
   ngOnInit(): any{
-    let board = new BoardComponent(); 
-    board.printBoard();
   }
 }
