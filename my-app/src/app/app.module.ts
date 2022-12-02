@@ -6,19 +6,30 @@ import { AppComponent } from './app.component';
 import { GameComponent } from './game/game.component';
 import { BoardComponent } from './game/board/board.component';
 import { BoxComponent } from './game/board/box/box.component';
+import { PawnComponent } from './game/board/pawn/pawn.component';
+
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+import { far } from '@fortawesome/free-regular-svg-icons';
 
 @NgModule({
   declarations: [
     AppComponent,
     GameComponent,
     BoardComponent,
-    BoxComponent
+    BoxComponent,
+    PawnComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    FontAwesomeModule
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas, far);
+  }
+}
