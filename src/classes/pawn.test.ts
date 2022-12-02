@@ -95,23 +95,30 @@ describe('1. Unit test on pawn', () => {
         })
     })
     describe("Moving black pawn", () => {
-        describe("1.1 White pawn located in 31", () => {
+        describe.skip("1.1 White pawn located in 31", () => {
             it('should be able to move to 41', () => {
                 let board = new Board();
                 let pawn = new Pawn(colour.BLACK);
-                let pawnToBeEaten = new Pawn(colour.WHITE);
 
                 let finalPos = board.boxes[4][1];
-                let eatPos = board.boxes[4][0];
                 board.boxes[3][1].setOccupied(pawn);
-                board.boxes[4][0].setOccupied(pawnToBeEaten);
                 
-                pawn.move(board,eatPos);
-                //expect(board.boxes[3][1].occupied).toBeFalsy();
-                //expect(board.boxes[4][1].occupied).toBeTruthy();
-                console.log(board.boxes[4][0]);
-                console.log(board.boxes[3][1]);
+                pawn.move(board,finalPos);
+                expect(board.boxes[3][1].occupied).toBeFalsy();
+                expect(board.boxes[4][1].occupied).toBeTruthy();
+              })
+        }),
+        describe("1.1 -", () => {
+            it('-', () => {
+                let board = new Board();
+                let pawn = new Pawn(colour.BLACK);
+
+                let finalPos = board.boxes[7][0];
+                board.boxes[6][0].setOccupied(pawn);
+                
+                pawn.move(board,finalPos);
               })
         })
+
     })
   });

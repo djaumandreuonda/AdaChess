@@ -5,12 +5,12 @@ enum x {
     a, b, c, d, e, f, g, h
 }
 enum type {
-    king = "king",
-    rook = "rook",
-    bishop ="bishop",
-    queen = "queen",
-    knight = "knigth",
-    pawn = "pawn",
+    king = "k",
+    rook = "r",
+    bishop ="b",
+    queen = "q",
+    knight = "k",
+    pawn = "p",
 }
 
 export{ colour, x, type }
