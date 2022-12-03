@@ -1,0 +1,6 @@
+
+<div *ngIf="this.boxes" class="board">
+    <div class="row" *ngFor="let row of this.boxes; index as i;">
+            <app-box class="box" *ngFor="let box of row; index as j;" [box]="this.boxes[i][j]"></app-box>
+    </div>
+</div>

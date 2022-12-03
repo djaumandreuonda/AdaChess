@@ -1,0 +1,12 @@
+.row{
+    display: block;
+    height: 50px;
+}
+.box{
+    display: inline-block;
+}
+.board{
+    border: 5px solid black;
+    width: fit-content;
+    height: fit-content;
+}

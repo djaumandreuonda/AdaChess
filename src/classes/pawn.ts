@@ -18,7 +18,7 @@ class Pawn extends Piece {
             case colour.BLACK: { 
                 if(!(board.boxes[this.coordinate.x+1][this.coordinate.y]?.isOccupied())){
                     this.possibleMoves.push(board.boxes[this.coordinate.x+1][this.coordinate.y]);
-                    if (this.coordinate.x == 1) {
+                    if (this.coordinate.x == 1 && !(board.boxes[this.coordinate.x+2][this.coordinate.y].isOccupied())) {
                       this.possibleMoves.push(board.boxes[this.coordinate.x+2][this.coordinate.y])
                     }
                   }
@@ -33,7 +33,7 @@ class Pawn extends Piece {
             case colour.WHITE: { 
                 if(!(board.boxes[this.coordinate.x-1][this.coordinate.y]?.isOccupied())){
                     this.possibleMoves.push(board.boxes[this.coordinate.x-1][this.coordinate.y]);
-                    if (this.coordinate.x == 6) {
+                    if (this.coordinate.x == 6 && !(board.boxes[this.coordinate.x+2][this.coordinate.y].isOccupied())) {
                       this.possibleMoves.push(board.boxes[this.coordinate.x-2][this.coordinate.y])
                     }
                   }
