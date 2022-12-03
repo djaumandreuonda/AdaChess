@@ -10,7 +10,7 @@ import { Pawn } from './board/model/pawn.model';
 export class GameComponent {
   piece:Pawn;
   constructor(){
-    this.piece = new Pawn(colour.BLACK);
+    this.piece = new Pawn(colour.WHITE);
   }
   ngOnInit(): any{
   }

@@ -7,13 +7,6 @@ class Piece {
     constructor(colour:colour){
       this.colour = colour;
     }
-    getColour(){
-      return this.colour;
-    }
-    getType(){
-      return this.type
-    }
-  }
-
+}
 export {Piece}
 
