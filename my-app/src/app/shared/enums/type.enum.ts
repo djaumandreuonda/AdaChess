@@ -1,5 +1,5 @@
 export enum type {
-    king = "k",
+    king = "K",
     rook = "r",
     bishop ="b",
     queen = "q",
