@@ -1,4 +1,8 @@
 <div (click)="sendCoordinates(this.box.coordinate)"
 [ngStyle]="{'width':+width+'px', 'height': +height+'px',
 'background-color': this.box.colour}"
-></div>
+><div *ngIf="this.box.piece?.type=='p'">
+    <fa-icon *ngIf="this.box.piece.colour=='white'" [icon]="['far', 'chess-pawn']" size="3x"></fa-icon>
+    <fa-icon *ngIf="this.box.piece.colour=='black'" [icon]="['fas', 'chess-pawn']" size="3x"></fa-icon>
+</div></div>
+

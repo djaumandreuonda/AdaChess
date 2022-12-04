@@ -10,11 +10,11 @@ export class Board {
         this.boxes = [];
         for (var i: number = 0; i < 8; i++) {
           this.boxes[i] = [];
-          let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.BLACK; // current colour is white if position is even, black if odd
+          let currentColour: colour = i % 2 == 0 ? colour.WHITE : colour.GRAY; // current colour is white if position is even, black if odd
           for (var j: number = 0; j < 8; j++) {
             this.boxes[i][j] = new Box(currentColour, new Coordinate(i, j)); // generate boxes with correct colour assigned
             currentColour =
-              currentColour == colour.WHITE ? colour.BLACK : colour.WHITE; // alternate colours during creation of a row
+              currentColour == colour.WHITE ? colour.GRAY : colour.WHITE; // alternate colours during creation of a row
           }
         }
         this.populateWhite(); 
