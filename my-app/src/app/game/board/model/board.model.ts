@@ -24,10 +24,44 @@ export class Board {
         for(var i: number = 0; i < 8; i++){
             this.boxes[6][i].setPiece(new Piece(colour.WHITE, type.pawn));
         }
+        for(var i: number = 0; i < 8; i++){
+            if(i == 0 || i == 7){
+                this.boxes[7][i].setPiece(new Piece(colour.WHITE, type.rook));
+            }
+            if(i == 1 || i == 6){
+                this.boxes[7][i].setPiece(new Piece(colour.WHITE, type.knight));
+            }
+            if(i == 2 || i == 5){
+                this.boxes[7][i].setPiece(new Piece(colour.WHITE, type.bishop));
+            }
+            if(i == 3){
+                this.boxes[7][i].setPiece(new Piece(colour.WHITE, type.queen));
+            }
+            if(i == 4){
+                this.boxes[7][i].setPiece(new Piece(colour.WHITE, type.king));
+            }
+        }
     }
     populateBlack(){
         for(var i: number = 0; i < 8; i++){
             this.boxes[1][i].setPiece(new Piece(colour.BLACK, type.pawn));
+        }
+        for(var i: number = 0; i < 8; i++){
+            if(i == 0 || i == 7){
+                this.boxes[0][i].setPiece(new Piece(colour.BLACK, type.rook));
+            }
+            if(i == 1 || i == 6){
+                this.boxes[0][i].setPiece(new Piece(colour.BLACK, type.knight));
+            }
+            if(i == 2 || i == 5){
+                this.boxes[0][i].setPiece(new Piece(colour.BLACK, type.bishop));
+            }
+            if(i == 3){
+                this.boxes[0][i].setPiece(new Piece(colour.BLACK, type.queen));
+            }
+            if(i == 4){
+                this.boxes[0][i].setPiece(new Piece(colour.BLACK, type.king));
+            }
         }
     }
 }
