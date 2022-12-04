@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Board } from './model/board.model';
 import { Coordinate } from './model/coordinate.model';
-import { GameControllerService } from 'src/app/game-controller.service';
 
 @Component({
   selector: 'app-board',
@@ -10,7 +9,7 @@ import { GameControllerService } from 'src/app/game-controller.service';
 })
 export class BoardComponent {
   board:Board;
-  constructor(private _game: GameControllerService){
+  constructor(){
     this.board = new Board();
   }
   registerCoordinate(coordinate:Coordinate){
