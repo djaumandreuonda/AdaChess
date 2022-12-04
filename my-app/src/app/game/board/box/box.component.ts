@@ -8,7 +8,7 @@ import { Coordinate } from '../model/coordinate.model';
 })
 export class BoxComponent {
   @Input() box!:Box;
-  @Output() coordinate = new EventEmitter<Coordinate>();;
+  @Output() coordinate = new EventEmitter<Coordinate>();
   width = 50;
   height = 50;
   sendCoordinates(coordinate:Coordinate){ 
