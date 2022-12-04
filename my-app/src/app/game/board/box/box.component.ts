@@ -7,12 +7,11 @@ import { Coordinate } from '../model/coordinate.model';
   styleUrls: ['./box.component.css']
 })
 export class BoxComponent {
-  @Input() box!: Box;
-  @Output() coordinate = new EventEmitter<Coordinate>(); 
+  @Input() box!:Box;
+  @Output() coordinate = new EventEmitter<Coordinate>();;
   width = 50;
   height = 50;
-
-  sendCoordinates(coordinate: Coordinate){
+  sendCoordinates(coordinate:Coordinate){ 
     this.coordinate.emit(coordinate);
   }
 }
