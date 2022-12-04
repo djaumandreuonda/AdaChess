@@ -1,17 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Box } from './model/box.model';
 import { colour } from 'src/app/shared/enums/colour.enum';
 import { Coordinate } from './model/coordinate.model';
+import { Board } from './model/board.model';
+import { Piece } from './model/piece.model';
+import { type } from 'src/app/shared/enums/type.enum';
+import { state } from 'src/app/shared/enums/state.enum';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent {
+export class BoardComponent implements OnInit {
   boxes: Box[][]; // define a 2d array which expects box objects
   size: number;
+  state: state; 
   constructor() {
+    this.state = state.AWAIT;
     this.boxes = [];
     this.size = 8; // size of the board is 8x8
     for (var i: number = 0; i < this.size; i++) {
@@ -24,13 +30,25 @@ export class BoardComponent {
       }
     }
   }
-
-  printBoard() {
-    for (var i: number = 0; i < 8; i++) {
-      console.log(i + 1);
-      for (var j: number = 0; j < 8; j++) {
-        console.log(this.boxes[i][j]);
-      }
+  ngOnInit(): void {
+    this.populateBoard();
+  }
+  populateBoard(){
+    let bp = new Piece(colour.BLACK);
+    let wp = new Piece(colour.WHITE);
+    for (var i: number = 0; i < 8; i++){
+      this.boxes[1][i].setPiece(bp);
+      this.boxes[6][i].setPiece(wp);
     }
+  }
+  registerCoordinate(coordinate:Coordinate){
+    console.log(coordinate);
+    console.log(this.isMove(coordinate));
+  }
+  isMove(coordinate:Coordinate):boolean{
+    if(this.boxes[coordinate.x][coordinate.y].piece){
+      return true;
+    }
+    return false; 
   }
 }
