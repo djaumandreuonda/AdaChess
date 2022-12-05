@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
 import { Board } from './model/board.model';
 import { Coordinate } from './model/coordinate.model';
 
@@ -8,11 +8,9 @@ import { Coordinate } from './model/coordinate.model';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent {
-  board:Board;
-  constructor(){
-    this.board = new Board();
-  }
+  @Input() board:Board;
+  @Output() coordinate = new EventEmitter<Coordinate>();
   registerCoordinate(coordinate:Coordinate){
-    console.log(coordinate);
+    this.coordinate.emit(coordinate);
   }
 }
