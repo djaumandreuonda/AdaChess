@@ -3,7 +3,6 @@ import { Board } from './board/model/board.model';
 import { Coordinate } from './board/model/coordinate.model';
 import { state } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
-import { type } from '../shared/enums/type.enum';
 
 @Component({
   selector: 'app-game',
@@ -15,8 +14,10 @@ export class GameComponent implements OnInit {
   turn:colour;
   state:state;
   possibleMoves:Coordinate[];
+  prevCoordinate:Coordinate; // remember to empty (decide where)
 
   constructor(){
+    this.possibleMoves = [];
     this.board = new Board(); 
     this.turn = colour.WHITE;
     this.state = state.AWAIT;
@@ -30,19 +31,19 @@ export class GameComponent implements OnInit {
     return false;
   }
   isValidMove(coordinate:Coordinate):boolean{
-    return false;
+    return false; 
   }
   registerCoordinate(coordinate:Coordinate){
-    console.log(this.state);
-    console.log(this.selectPiece(coordinate))
 
     if(this.state == state.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let validMove = this.isValidMove(coordinate);
+      console.log(validMove);
       if(!validMove){ // if is not a valid movement, change the state back
         this.possibleMoves = []; 
         this.state = state.AWAIT; // cancel the attempt to move
       }
       if(validMove){ // if a valid move then change the turn
+        // this.move(coordinate);
         this.turn = this.turn == colour.WHITE? colour.BLACK:colour.WHITE;
       }
     }
@@ -51,7 +52,6 @@ export class GameComponent implements OnInit {
         this.state = state.ATTEMPTMOVE; // change status, player is trying to move a piece
         switch(this.board.boxes[coordinate.x][coordinate.y].piece.type) {
           case 'p':
-            console.log("returning possible moves for a pawn")
             break;
           case 'b':
             break;
