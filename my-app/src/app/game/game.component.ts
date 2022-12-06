@@ -14,7 +14,7 @@ export class GameComponent {
   turn:colour;
   state:state;
   possibleMoves:Coordinate[];
-  prevCoordinate:Coordinate; // remember to empty (decide where)
+  prevCoordinate:Coordinate;
 
   constructor(){
     this.possibleMoves = [];
