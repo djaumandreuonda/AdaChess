@@ -32,8 +32,6 @@ export class GameComponent implements OnInit{
     // console.log(box.getPiece());
     // box.setPiece(new Piece(colour.BLACK, type.pawn));
     // console.log(this.board);
-    let piece = new Piece(colour.WHITE, type.pawn);
-    this.board.boxes[4][2].setPiece(piece);
   }
   selectPiece(coordinate:Coordinate):boolean{
     if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
@@ -64,6 +62,7 @@ export class GameComponent implements OnInit{
         console.log("Valid move!");
         this.board = this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
         this.turn = this.turn == colour.WHITE? colour.BLACK:colour.WHITE;
+        this.possibleMoves = [];
       }
       this.state = state.AWAIT;
     }
@@ -77,18 +76,22 @@ export class GameComponent implements OnInit{
             this.possibleMoves = this._availableMoves.getPawnMoves(coordinate, this.board);
             break;
           case 'b':
+            this.possibleMoves = [];
             console.log("Storing possible movements for bishop");
             break;
           case 'r':
+            this.possibleMoves = [];
             console.log("Storing possible movements for rook");
             break;
           case 'k':
+            this.possibleMoves = [];
             console.log("Storing possible movements for knight");
             break;
           case 'q':
             console.log("Storing possible movements for queen");
             break;
           case 'K':
+            this.possibleMoves = [];
             console.log("Storing possible movements for king");
             break;
         }

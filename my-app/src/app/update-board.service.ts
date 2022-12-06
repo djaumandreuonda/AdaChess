@@ -11,6 +11,9 @@ export class UpdateBoardService {
   movePiece(oldCoordinate:Coordinate, coordinate:Coordinate, board:Board):Board{
     let pieceMoved = board.boxes[oldCoordinate.x][oldCoordinate.y].getPiece();
     board.boxes[oldCoordinate.x][oldCoordinate.y].emptyBox(); 
+    if(board.boxes[coordinate.x][coordinate.y].getPiece()){
+      board.boxes[coordinate.x][coordinate.y].emptyBox();
+    }
     board.boxes[coordinate.x][coordinate.y].setPiece(pieceMoved);
     console.log(board);
     return board; 

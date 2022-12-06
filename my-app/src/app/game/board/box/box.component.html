@@ -3,7 +3,7 @@
 'background-color': this.box.colour}"
 >
 <div *ngIf="this.box.getPiece()?.type=='p'">
-    <fa-icon *ngIf="this.box.getPiece()?.colour=='white'" [icon]="['far', 'chess-pawn']" size="3x"></fa-icon>
+    <fa-icon *ngIf="this.box.getPiece().colour=='white'" [icon]="['far', 'chess-pawn']" size="3x"></fa-icon>
     <fa-icon *ngIf="this.box.getPiece().colour=='black'" [icon]="['fas', 'chess-pawn']" size="3x"></fa-icon>
 </div>
 <div *ngIf="this.box.getPiece()?.type=='b'">
