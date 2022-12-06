@@ -5,12 +5,28 @@ import { Piece } from "./piece.model";
 export class Box {
     coordinate: Coordinate;
     colour: colour;
-    piece: Piece;
+    private pieceArr: Piece[];
+    //piece: Piece;
     constructor(colour: colour, coordinate:Coordinate) {
+        this.pieceArr = [];
         this.coordinate = coordinate;
         this.colour = colour;
     }
+    private isEmpty():boolean{
+        if(this.pieceArr[0]){return false}
+        return true;
+    }
+    getPiece(){
+        return this.pieceArr[0];
+    }
     setPiece(piece:Piece){
-        this.piece = piece; 
+        if(this.isEmpty()){
+            this.pieceArr.push(piece);
+        }
+    }
+    emptyBox(){
+        if(!(this.isEmpty())){
+            this.pieceArr.pop();
+        }
     }
 }
