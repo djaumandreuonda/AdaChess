@@ -26,6 +26,7 @@ export class GameComponent implements OnInit{
     this.board = new Board(); 
     this.turn = colour.WHITE;
     this.state = state.AWAIT;
+    console.log(this.board);
   }
   ngOnInit(): void {
     // let box = new Box(colour.BLACK, new Coordinate(0,0));
@@ -48,19 +49,28 @@ export class GameComponent implements OnInit{
       }});
       return valid; 
   }
+  pawnTransform(){
+    for (let i = 0; i < 8; i++) {
+      if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "p"){
+        this.board.boxes[0][i].emptyBox();
+        this.board.boxes[0][i].setPiece(new Piece(this.turn, type.queen));
+      }
+      if(this.board.boxes[7][i].getPiece()?.colour == this.turn && this.board.boxes[7][i].getPiece()?.type == "p"){
+        this.board.boxes[7][i].emptyBox();
+        this.board.boxes[7][i].setPiece(new Piece(this.turn, type.queen));
+      }
+    }
+  }
   registerCoordinate(coordinate:Coordinate){
     console.log(coordinate);
     if(this.state == state.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let validMove = this.isValidMove(coordinate);
-      console.log(validMove);
       if(!validMove){ // if is not a valid movement, change the state back
         this.possibleMoves = []; 
       }
       if(validMove){ // if a valid move then change the turn
-        // this.move(coordinate);
-
-        console.log("Valid move!");
         this.board = this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
+        this.pawnTransform();
         this.turn = this.turn == colour.WHITE? colour.BLACK:colour.WHITE;
         this.possibleMoves = [];
       }
@@ -76,23 +86,30 @@ export class GameComponent implements OnInit{
             this.possibleMoves = this._availableMoves.getPawnMoves(coordinate, this.board);
             break;
           case 'b':
-            this.possibleMoves = [];
+            this.possibleMoves = this._availableMoves.getBishopMoves(coordinate, this.board);
             console.log("Storing possible movements for bishop");
+            console.log(this.possibleMoves);
             break;
           case 'r':
-            this.possibleMoves = [];
+            this.possibleMoves = this._availableMoves.getRookMoves(coordinate, this.board);
             console.log("Storing possible movements for rook");
+            console.log(this.possibleMoves);
             break;
           case 'k':
-            this.possibleMoves = [];
+            this.possibleMoves = this._availableMoves.getKnightMoves(coordinate, this.board);
             console.log("Storing possible movements for knight");
+            console.log(this.possibleMoves);
             break;
           case 'q':
+            this.possibleMoves = this._availableMoves.getQueenMoves(coordinate, this.board);
             console.log("Storing possible movements for queen");
+            console.log(this.possibleMoves);
             break;
           case 'K':
+            this.possibleMoves = this._availableMoves.getKingMoves(coordinate, this.board);
             this.possibleMoves = [];
             console.log("Storing possible movements for king");
+            console.log(this.possibleMoves);
             break;
         }
       }
