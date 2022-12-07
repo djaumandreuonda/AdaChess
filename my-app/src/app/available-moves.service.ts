@@ -10,6 +10,7 @@ export class AvailableMovesService {
   getPawnMoves(coordinate:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[coordinate.x][coordinate.y].getPiece();
+
     if(!coordinate){
         return possibleMoves; 
     }
@@ -172,6 +173,15 @@ export class AvailableMovesService {
     let possibleMoves:Coordinate[] = []; 
     let knight = board.boxes[coordinate.x][coordinate.y].getPiece();
 
+    for (let i = -2; i < 3; i++){
+      for (let j = -2; j < 3; j++){
+        if(Math.pow(i, 2) + Math.pow(j, 2) == 5){
+          if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (knight.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+            possibleMoves.push(board.boxes[coordinate.x + i][coordinate.y + j].coordinate)
+          }
+        }
+      }
+    }   
     return possibleMoves;
   }
   getQueenMoves(coordinate:Coordinate,board:Board):Coordinate[]{
@@ -182,11 +192,10 @@ export class AvailableMovesService {
   getKingMoves(coordinate:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let king = board.boxes[coordinate.x][coordinate.y].getPiece();
-    
+
     for (let i = -1; i < 2; i++){
-      for (let j = -1; j < 2; j++){
-        // Add if box is empty or if box has a piece that is the oppostive colour of my piece 
-        if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (king.colour == colour.BLACK? colour.WHITE: colour.BLACK)|| board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty()){
+      for (let j = -1; j < 2; j++){ 
+        if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (king.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
           possibleMoves.push(board.boxes[coordinate.x + i][coordinate.y + j].coordinate);
         }
       }
