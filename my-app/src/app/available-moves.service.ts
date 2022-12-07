@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Board } from './game/board/model/board.model';
 import { Coordinate } from './game/board/model/coordinate.model';
+import { colour } from './shared/enums/colour.enum';
 @Injectable({
   providedIn: 'root'
 })
@@ -48,6 +49,65 @@ export class AvailableMovesService {
            break; 
         } 
     }    
+    return possibleMoves;
+  }
+  getRookMoves(coordinate:Coordinate, board:Board):Coordinate[]{
+    let possibleMoves:Coordinate[] = []; 
+    let rook = board.boxes[coordinate.x][coordinate.y].getPiece();
+
+    try {
+      for (let i = 1; i < 8; i++) { // how can I make it so I don't depend on the eight?
+        let currentBox = board.boxes[coordinate.x-i][coordinate.y]
+        if(currentBox.getPiece()?.colour == rook.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x+i][coordinate.y]
+        if(currentBox.getPiece()?.colour == rook.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x][coordinate.y-i]
+        if(currentBox.getPiece()?.colour == rook.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x][coordinate.y+i]
+        if(currentBox.getPiece()?.colour == rook.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    
     return possibleMoves;
   }
 }
