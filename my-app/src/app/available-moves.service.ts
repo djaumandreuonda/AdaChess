@@ -182,7 +182,15 @@ export class AvailableMovesService {
   getKingMoves(coordinate:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let king = board.boxes[coordinate.x][coordinate.y].getPiece();
-
+    
+    for (let i = -1; i < 2; i++){
+      for (let j = -1; j < 2; j++){
+        // Add if box is empty or if box has a piece that is the oppostive colour of my piece 
+        if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (king.colour == colour.BLACK? colour.WHITE: colour.BLACK)|| board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty()){
+          possibleMoves.push(board.boxes[coordinate.x + i][coordinate.y + j].coordinate);
+        }
+      }
+    }
     return possibleMoves;
   }
 }

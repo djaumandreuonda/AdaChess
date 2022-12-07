@@ -102,7 +102,6 @@ export class GameComponent implements OnInit{
             break;
           case 'K':
             this.possibleMoves = this._availableMoves.getKingMoves(coordinate, this.board);
-            this.possibleMoves = [];
             console.log("Storing possible movements for king");
             console.log(this.possibleMoves);
             break;

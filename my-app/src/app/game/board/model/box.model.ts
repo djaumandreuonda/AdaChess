@@ -12,7 +12,7 @@ export class Box {
         this.coordinate = coordinate;
         this.colour = colour;
     }
-    private isEmpty():boolean{
+    isEmpty():boolean{
         if(this.pieceArr[0]){return false}
         return true;
     }
