@@ -9,15 +9,13 @@ export class AvailableMovesService {
 
   constructor() { }
   getPawnMoves(coordinate:Coordinate, board:Board):Coordinate[]{   
-    // console.log(board);
-    // console.log(coordinate);
-    // console.log(board.boxes[coordinate.x-2][coordinate.y].getPiece());
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[coordinate.x][coordinate.y].getPiece();
     if(!coordinate){
         return possibleMoves; 
     }
-    switch(pawn.colour) { 
+    try{
+      switch(pawn.colour) { 
         case "black": { 
             if(!(board.boxes[coordinate.x+1][coordinate.y].getPiece())){ // if the next box is not occupied
                 possibleMoves.push(board.boxes[coordinate.x+1][coordinate.y].coordinate);
@@ -48,7 +46,9 @@ export class AvailableMovesService {
             }
            break; 
         } 
-    }    
+      }    
+    } catch(err){}
+    
     return possibleMoves;
   }
   getRookMoves(coordinate:Coordinate, board:Board):Coordinate[]{
@@ -108,6 +108,82 @@ export class AvailableMovesService {
       }
     } catch(err){}
     
+    return possibleMoves;
+  }
+  getBishopMoves(coordinate:Coordinate,board:Board):Coordinate[]{
+    let possibleMoves:Coordinate[] = []; 
+    let bishop = board.boxes[coordinate.x][coordinate.y].getPiece();
+    
+    try {
+      for (let i = 1; i < 8; i++) { // how can I make it so I don't depend on the eight?
+        let currentBox = board.boxes[coordinate.x+i][coordinate.y+i]
+        if(currentBox.getPiece()?.colour == bishop.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x-i][coordinate.y-i]
+        if(currentBox.getPiece()?.colour == bishop.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x+i][coordinate.y-i]
+        if(currentBox.getPiece()?.colour == bishop.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+    try {
+      for (let i = 1; i < 8; i++) { 
+        let currentBox = board.boxes[coordinate.x-i][coordinate.y+i]
+        if(currentBox.getPiece()?.colour == bishop.colour){
+          break; 
+        }
+        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          possibleMoves.push(currentBox.coordinate);
+          break;
+        }
+        possibleMoves.push(currentBox.coordinate);
+      }
+    } catch(err){}
+
+    return possibleMoves;
+  }
+  getKnightMoves(coordinate:Coordinate,board:Board):Coordinate[]{
+    let possibleMoves:Coordinate[] = []; 
+    let knight = board.boxes[coordinate.x][coordinate.y].getPiece();
+
+    return possibleMoves;
+  }
+  getQueenMoves(coordinate:Coordinate,board:Board):Coordinate[]{
+    let possibleMoves:Coordinate[] = [...this.getRookMoves(coordinate, board), ...this.getBishopMoves(coordinate, board)]; 
+
+    return possibleMoves;
+  }
+  getKingMoves(coordinate:Coordinate,board:Board):Coordinate[]{
+    let possibleMoves:Coordinate[] = []; 
+    let king = board.boxes[coordinate.x][coordinate.y].getPiece();
+
     return possibleMoves;
   }
 }
