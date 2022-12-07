@@ -7,7 +7,6 @@ import { colour } from './shared/enums/colour.enum';
 })
 export class AvailableMovesService {
 
-  constructor() { }
   getPawnMoves(coordinate:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[coordinate.x][coordinate.y].getPiece();

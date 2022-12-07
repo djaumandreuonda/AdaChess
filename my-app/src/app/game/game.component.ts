@@ -3,7 +3,6 @@ import { Board } from './board/model/board.model';
 import { Coordinate } from './board/model/coordinate.model';
 import { state } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
-import { Box } from './board/model/box.model';
 import { Piece } from './board/model/piece.model';
 import { type } from '../shared/enums/type.enum';
 import { AvailableMovesService } from '../available-moves.service';
@@ -29,10 +28,6 @@ export class GameComponent implements OnInit{
     console.log(this.board);
   }
   ngOnInit(): void {
-    // let box = new Box(colour.BLACK, new Coordinate(0,0));
-    // console.log(box.getPiece());
-    // box.setPiece(new Piece(colour.BLACK, type.pawn));
-    // console.log(this.board);
   }
   selectPiece(coordinate:Coordinate):boolean{
     if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
