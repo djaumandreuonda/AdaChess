@@ -33,6 +33,7 @@ export class GameComponent implements OnInit{
   ngOnInit(): void {
     this._updateBoardService.gameMoveUpdate.subscribe(x => {this.registerCoordinate(x)})
   }
+  
   selectPiece(coordinate:Coordinate):boolean{
     if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
       return true; // assume player is trying to select a piece
@@ -44,7 +45,7 @@ export class GameComponent implements OnInit{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = this.board.boxes[i][j].getPiece();
-        if(currentPiece?.colour == (this.turn == colour.WHITE? colour.BLACK:colour.WHITE) && currentPiece?.type != "pawn"){   
+        if(currentPiece?.colour == this._helperService.getOppositeColour(this.turn) && currentPiece?.type != "pawn"){   
           if(this._helperService.isInArray(this.getMoves(this.board.boxes[i][j].coordinate), coordinate)){
             return true
           }
@@ -122,7 +123,7 @@ export class GameComponent implements OnInit{
       if(validMove){ // if a valid move then change the turn
         this.board = this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
         this.pawnTransform();
-        this.turn = this.turn == colour.WHITE? colour.BLACK:colour.WHITE;
+        this.turn = this._helperService.getOppositeColour(this.turn);
       }
       this.possibleMoves = [];
       this.state = state.AWAIT;

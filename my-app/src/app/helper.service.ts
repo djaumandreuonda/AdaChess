@@ -7,7 +7,6 @@ import { Coordinate } from './game/board/model/coordinate.model';
 })
 export class HelperService {
 
-  constructor() { }
   getOppositeColour(initialColour:colour):colour{
     return (initialColour == colour.BLACK? colour.WHITE: colour.BLACK);
   }

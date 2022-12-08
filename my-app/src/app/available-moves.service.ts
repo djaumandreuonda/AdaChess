@@ -2,11 +2,14 @@ import { Injectable } from '@angular/core';
 import { Board } from './game/board/model/board.model';
 import { Coordinate } from './game/board/model/coordinate.model';
 import { colour } from './shared/enums/colour.enum';
+
+import { HelperService } from './helper.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AvailableMovesService {
-
+  constructor(private _helperService:HelperService){}
   getPawnMoves(coordinate:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[coordinate.x][coordinate.y].getPiece();
@@ -61,7 +64,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == rook.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(rook.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -74,7 +77,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == rook.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(rook.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -87,7 +90,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == rook.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(rook.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -100,7 +103,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == rook.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (rook.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(rook.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -120,7 +123,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == bishop.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(bishop.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -133,7 +136,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == bishop.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(bishop.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -146,7 +149,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == bishop.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(bishop.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -159,7 +162,7 @@ export class AvailableMovesService {
         if(currentBox.getPiece()?.colour == bishop.colour){
           break; 
         }
-        if(currentBox.getPiece()?.colour == (bishop.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(currentBox.getPiece()?.colour == this._helperService.getOppositeColour(bishop.colour)){
           possibleMoves.push(currentBox.coordinate);
           break;
         }
@@ -176,7 +179,7 @@ export class AvailableMovesService {
     for (let i = -2; i < 3; i++){
       for (let j = -2; j < 3; j++){
         if(Math.pow(i, 2) + Math.pow(j, 2) == 5){
-          if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (knight.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+          if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == this._helperService.getOppositeColour(knight.colour)){
             possibleMoves.push(board.boxes[coordinate.x + i][coordinate.y + j].coordinate)
           }
         }
@@ -195,7 +198,7 @@ export class AvailableMovesService {
 
     for (let i = -1; i < 2; i++){
       for (let j = -1; j < 2; j++){ 
-        if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == (king.colour == colour.BLACK? colour.WHITE: colour.BLACK)){
+        if(board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.isEmpty() || board.boxes?.[coordinate.x + i]?.[coordinate.y + j]?.getPiece()?.colour == this._helperService.getOppositeColour(king.colour)){
           possibleMoves.push(board.boxes[coordinate.x + i][coordinate.y + j].coordinate);
         }
       }
