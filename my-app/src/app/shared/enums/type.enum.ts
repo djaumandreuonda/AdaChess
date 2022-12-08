@@ -1,8 +1,8 @@
 export enum type {
-    king = "K",
-    rook = "r",
-    bishop ="b",
-    queen = "q",
-    knight = "k",
-    pawn = "p",
+    pawn = "pawn",
+    bishop = "bishop",
+    rook = "rook",
+    knight = "knight",
+    queen = "queen",
+    king = "king"
 }
