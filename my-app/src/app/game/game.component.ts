@@ -43,6 +43,16 @@ export class GameComponent implements OnInit{
     return false;
   }
 
+  isValidMove(coordinate:Coordinate):boolean{
+    if (this._helperService.isInArray(this.possibleMoves, coordinate)){
+      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.isForbiddenMove(coordinate)){
+        return false
+      }
+      return true
+    }
+    return false
+  }
+
   isForbiddenMove(coordinate:Coordinate):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
@@ -92,16 +102,6 @@ export class GameComponent implements OnInit{
         break;
     }
     return moves;
-  }
-
-  isValidMove(coordinate:Coordinate):boolean{
-    if (this._helperService.isInArray(this.possibleMoves, coordinate)){
-      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.isForbiddenMove(coordinate)){
-        return false
-      }
-      return true
-    }
-    return false
   }
 
   pawnTransform(){
