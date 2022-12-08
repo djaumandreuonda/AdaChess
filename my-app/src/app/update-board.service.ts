@@ -17,7 +17,7 @@ export class UpdateBoardService {
       board.boxes[coordinate.x][coordinate.y].emptyBox();
     }
     board.boxes[coordinate.x][coordinate.y].setPiece(pieceMoved);
-    console.log(board);
+
     return board; 
   }
 }
