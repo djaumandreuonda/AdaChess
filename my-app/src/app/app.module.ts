@@ -8,11 +8,13 @@ import { BoardComponent } from './game/board/board.component';
 import { BoxComponent } from './game/board/box/box.component';
 
 import { AvailableMovesService } from './available-moves.service';
+import { UpdateBoardService } from './update-board.service';
+import { HelperService } from './helper.service';
 
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
-import { UpdateBoardService } from './update-board.service';
+
 
 @NgModule({
   declarations: [
@@ -26,7 +28,7 @@ import { UpdateBoardService } from './update-board.service';
     AppRoutingModule,
     FontAwesomeModule
   ],
-  providers: [AvailableMovesService, UpdateBoardService],
+  providers: [AvailableMovesService, UpdateBoardService, HelperService],
   bootstrap: [AppComponent]
 })
 export class AppModule { 
