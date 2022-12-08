@@ -18,7 +18,9 @@ export class GameComponent implements OnInit{
   turn:colour;
   state:state;
   possibleMoves:Coordinate[];
+  forbiddenLocations:Coordinate[];
   prevCoordinate:Coordinate;
+
 
   constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService){
     this.possibleMoves = [];
@@ -34,6 +36,60 @@ export class GameComponent implements OnInit{
       return true; // assume player is trying to select a piece
     } 
     return false;
+  }
+
+  getForbiddenMoves():Coordinate[]{
+    let forbiddenMoves:Coordinate[] = [];
+    for (var i: number = 0; i < 8; i++) {
+      for (var j: number = 0; j < 8; j++) {
+        let currentPiece = this.board.boxes[i][j].getPiece();
+        console.log("i: " + i + " j: " + j);
+        if(currentPiece?.colour == (this.turn == colour.WHITE? colour.BLACK:colour.WHITE) && currentPiece?.type != "p"){   
+          console.log(currentPiece);
+          console.log(this.getMoves(this.board.boxes[i][j].coordinate));
+          forbiddenMoves.push.apply(forbiddenMoves, this.getMoves(this.board.boxes[i][j].coordinate));
+        }
+      }
+    }
+    console.log(forbiddenMoves)
+    return forbiddenMoves
+  }
+
+  getMoves(coordinate:Coordinate):Coordinate[]{
+    let moves:Coordinate[] = [];
+    switch(this.board.boxes[coordinate.x][coordinate.y].getPiece().type) {
+      case 'p':
+        moves = this._availableMoves.getPawnMoves(coordinate, this.board);
+        //console.log("Storing possible movements for pawn");
+        //console.log(this.possibleMoves);
+        break;
+      case 'b':
+        moves = this._availableMoves.getBishopMoves(coordinate, this.board);
+        // console.log("Storing possible movements for bishop");
+        // console.log(this.possibleMoves);
+        break;
+      case 'r':
+        moves = this._availableMoves.getRookMoves(coordinate, this.board);
+        // console.log("Storing possible movements for rook");
+        // console.log(this.possibleMoves);
+        break;
+      case 'k':
+        moves = this._availableMoves.getKnightMoves(coordinate, this.board);
+        // console.log("Storing possible movements for knight");
+        // console.log(this.possibleMoves);
+        break;
+      case 'q':
+        moves = this._availableMoves.getQueenMoves(coordinate, this.board);
+        // console.log("Storing possible movements for queen");
+        // console.log(this.possibleMoves);
+        break;
+      case 'K':
+        moves = this._availableMoves.getKingMoves(coordinate, this.board);
+        // console.log("Storing possible movements for king");
+        // console.log(this.possibleMoves);
+        break;
+    }
+    return moves;
   }
 
   isValidMove(coordinate:Coordinate):boolean{
@@ -80,37 +136,8 @@ export class GameComponent implements OnInit{
       if(this.selectPiece(coordinate)){ // check it is trying to click a piece 
         this.state = state.ATTEMPTMOVE; // change status, player is trying to move a piece
         this.prevCoordinate = coordinate; // once status has been changed, the previous move needs to be reference to know what piece the player is trying to move
-        switch(this.board.boxes[coordinate.x][coordinate.y].getPiece().type) {
-          case 'p':
-            console.log("Storing possible movements for pawn");
-            this.possibleMoves = this._availableMoves.getPawnMoves(coordinate, this.board);
-            break;
-          case 'b':
-            this.possibleMoves = this._availableMoves.getBishopMoves(coordinate, this.board);
-            console.log("Storing possible movements for bishop");
-            console.log(this.possibleMoves);
-            break;
-          case 'r':
-            this.possibleMoves = this._availableMoves.getRookMoves(coordinate, this.board);
-            console.log("Storing possible movements for rook");
-            console.log(this.possibleMoves);
-            break;
-          case 'k':
-            this.possibleMoves = this._availableMoves.getKnightMoves(coordinate, this.board);
-            console.log("Storing possible movements for knight");
-            console.log(this.possibleMoves);
-            break;
-          case 'q':
-            this.possibleMoves = this._availableMoves.getQueenMoves(coordinate, this.board);
-            console.log("Storing possible movements for queen");
-            console.log(this.possibleMoves);
-            break;
-          case 'K':
-            this.possibleMoves = this._availableMoves.getKingMoves(coordinate, this.board);
-            console.log("Storing possible movements for king");
-            console.log(this.possibleMoves);
-            break;
-        }
+        this.possibleMoves = this.getMoves(coordinate);
+        this.getForbiddenMoves();
       }
     }
   }
