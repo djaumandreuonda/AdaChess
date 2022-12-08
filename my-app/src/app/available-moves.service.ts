@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { Board } from './game/board/model/board.model';
 import { Coordinate } from './game/board/model/coordinate.model';
 

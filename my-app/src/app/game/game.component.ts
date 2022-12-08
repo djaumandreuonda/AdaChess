@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+
 import { Board } from './board/model/board.model';
 import { Coordinate } from './board/model/coordinate.model';
+import { Piece } from './board/model/piece.model';
+
 import { state } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
-import { Piece } from './board/model/piece.model';
 import { type } from '../shared/enums/type.enum';
 
 import { AvailableMovesService } from '../available-moves.service';
@@ -31,9 +33,9 @@ export class GameComponent implements OnInit{
     console.log(this.board);
   }
   ngOnInit(): void {
-    this._updateBoardService.gameMoveUpdate.subscribe(x => {this.registerCoordinate(x)})
+    this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
-  
+
   selectPiece(coordinate:Coordinate):boolean{
     if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
       return true; // assume player is trying to select a piece

@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { Board } from './game/board/model/board.model';
 import { Coordinate } from './game/board/model/coordinate.model';
-
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

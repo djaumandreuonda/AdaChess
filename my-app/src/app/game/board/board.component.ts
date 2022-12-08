@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
 import { Board } from './model/board.model';
-import { Coordinate } from './model/coordinate.model';
 
 @Component({
   selector: 'app-board',

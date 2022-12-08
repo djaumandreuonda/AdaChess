@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { colour } from './shared/enums/colour.enum';
+
 import { Coordinate } from './game/board/model/coordinate.model';
+import { colour } from './shared/enums/colour.enum';
 
 @Injectable({
   providedIn: 'root'

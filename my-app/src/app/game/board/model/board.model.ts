@@ -1,6 +1,7 @@
 import { Piece } from "./piece.model";
 import { Coordinate } from "./coordinate.model";
 import { Box } from "./box.model";
+
 import { colour } from "src/app/shared/enums/colour.enum";
 import { type } from "src/app/shared/enums/type.enum";
 
