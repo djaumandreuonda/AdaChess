@@ -21,9 +21,9 @@ export class GameComponent implements OnInit{
   board:Board; 
   turn:colour;
   state:state;
-  possibleMoves:Coordinate[];
-  forbiddenLocations:Coordinate[];
   prevCoordinate:Coordinate;
+  possibleMoves:Coordinate[];
+  
 
   constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService:HelperService ){
     this.possibleMoves = [];
@@ -32,7 +32,7 @@ export class GameComponent implements OnInit{
     this.state = state.AWAIT;
     console.log(this.board);
   }
-  
+
   ngOnInit(): void {
     this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
