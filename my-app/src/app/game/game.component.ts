@@ -120,15 +120,12 @@ export class GameComponent implements OnInit{
 
     if(this.state == state.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let validMove = this.isValidMove(coordinate);
-      if(!validMove){ // if is not a valid movement, change the state back
-        this.possibleMoves = []; 
-      }
       if(validMove){ // if a valid move then change the turn
         this.board = this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
         this.pawnTransform();
         this.turn = this.turn == colour.WHITE? colour.BLACK:colour.WHITE;
-        this.possibleMoves = [];
       }
+      this.possibleMoves = [];
       this.state = state.AWAIT;
     }
 
