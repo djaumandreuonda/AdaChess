@@ -1,9 +1,8 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { UpdateBoardService } from 'src/app/shared/services/update-board.service';
 
 import { Box } from '../model/box.model';
 import { Coordinate } from '../model/coordinate.model';
-
-import { UpdateBoardService } from 'src/app/update-board.service';
 
 @Component({
   selector: 'app-box',

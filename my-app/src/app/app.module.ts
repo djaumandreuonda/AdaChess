@@ -10,9 +10,9 @@ import { GameComponent } from './game/game.component';
 import { BoardComponent } from './game/board/board.component';
 import { BoxComponent } from './game/board/box/box.component';
 
-import { AvailableMovesService } from './available-moves.service';
-import { UpdateBoardService } from './update-board.service';
-import { HelperService } from './helper.service';
+import { UpdateBoardService } from './shared/services/update-board.service';
+import { HelperService } from './shared/services/helper.service';
+import { AvailableMovesService } from './shared/services/available-moves.service';
 
 
 

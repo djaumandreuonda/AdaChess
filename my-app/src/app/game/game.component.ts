@@ -4,13 +4,13 @@ import { Board } from './board/model/board.model';
 import { Coordinate } from './board/model/coordinate.model';
 import { Piece } from './board/model/piece.model';
 
-import { state } from '../shared/enums/state.enum';
+import { moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
 import { type } from '../shared/enums/type.enum';
 
-import { AvailableMovesService } from '../available-moves.service';
-import { UpdateBoardService } from '../update-board.service';
-import { HelperService } from '../helper.service';
+import { UpdateBoardService } from '../shared/services/update-board.service';
+import { HelperService } from '../shared/services/helper.service';
+import { AvailableMovesService } from '../shared/services/available-moves.service';
 
 @Component({
   selector: 'app-game',
@@ -20,16 +20,19 @@ import { HelperService } from '../helper.service';
 export class GameComponent implements OnInit{
   board:Board; 
   turn:colour;
-  state:state;
+  state:moveState;
+  blackKingCoordinate:Coordinate;
+  whiteKingCoordinate:Coordinate;
   prevCoordinate:Coordinate;
   possibleMoves:Coordinate[];
-  
 
   constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService:HelperService ){
     this.possibleMoves = [];
     this.board = new Board(); 
+    this.blackKingCoordinate = new Coordinate(0,4);
+    this.whiteKingCoordinate = new Coordinate(7,4);
     this.turn = colour.WHITE;
-    this.state = state.AWAIT;
+    this.state = moveState.AWAIT;
     console.log(this.board);
   }
 
@@ -43,23 +46,37 @@ export class GameComponent implements OnInit{
     } 
     return false;
   }
+  // Valid move:
+  // - valid move is inside the possible moves 
+  // - if king, then is not a forbidden move 
+  // - valid move does not cause a check on your king 
+  //     this would mean recreating the move I'm trying to do 
+  //     If king coordinate is fobidden move, then not valid 
 
-  isValidMove(coordinate:Coordinate):boolean{
-    if (this._helperService.isInArray(this.possibleMoves, coordinate)){
-      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.isForbiddenMove(coordinate)){
+  // - if in check, only allow moves that prevent that check
+  isValidMove(move:Coordinate):boolean{
+    if (this._helperService.isInArray(this.possibleMoves, move)){
+      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.kingWillBeEaten(move)){
         return false
       }
+      this._updateBoardService.movePiece(this.prevCoordinate, move, this.board); 
+      if(this.turn == "white"? this.kingWillBeEaten(this.whiteKingCoordinate) : this.kingWillBeEaten(this.blackKingCoordinate) ){
+        console.log("king will be eaten")
+        this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); 
+        return false
+      }
+      this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); 
       return true
     }
     return false
   }
 
-  isForbiddenMove(coordinate:Coordinate):boolean{
+  kingWillBeEaten(kingPos:Coordinate):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = this.board.boxes[i][j].getPiece();
         if(currentPiece?.colour == this._helperService.getOppositeColour(this.turn) && currentPiece?.type != "pawn"){   
-          if(this._helperService.isInArray(this.getMoves(this.board.boxes[i][j].coordinate), coordinate)){
+          if(this._helperService.isInArray(this._availableMoves.getMoves(this.board, this.board.boxes[i][j].coordinate), kingPos)){
             return true
           }
         }
@@ -68,44 +85,7 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  getMoves(coordinate:Coordinate):Coordinate[]{
-    let moves:Coordinate[] = [];
-    switch(this.board.boxes[coordinate.x][coordinate.y].getPiece().type) {
-      case 'pawn':
-        moves = this._availableMoves.getPawnMoves(coordinate, this.board);
-        //console.log("Storing possible movements for pawn");
-        //console.log(this.possibleMoves);
-        break;
-      case 'bishop':
-        moves = this._availableMoves.getBishopMoves(coordinate, this.board);
-        // console.log("Storing possible movements for bishop");
-        // console.log(this.possibleMoves);
-        break;
-      case 'rook':
-        moves = this._availableMoves.getRookMoves(coordinate, this.board);
-        // console.log("Storing possible movements for rook");
-        // console.log(this.possibleMoves);
-        break;
-      case 'knight':
-        moves = this._availableMoves.getKnightMoves(coordinate, this.board);
-        // console.log("Storing possible movements for knight");
-        // console.log(this.possibleMoves);
-        break;
-      case 'queen':
-        moves = this._availableMoves.getQueenMoves(coordinate, this.board);
-        // console.log("Storing possible movements for queen");
-        // console.log(this.possibleMoves);
-        break;
-      case 'king':
-        moves = this._availableMoves.getKingMoves(coordinate, this.board);
-        // console.log("Storing possible movements for king");
-        // console.log(this.possibleMoves);
-        break;
-    }
-    return moves;
-  }
-
-  pawnTransform(){
+  pawnTransform():void{
     for (let i = 0; i < 8; i++) {
       if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "pawn"){
         this.board.boxes[0][i].emptyBox();
@@ -118,25 +98,42 @@ export class GameComponent implements OnInit{
     }
   }
 
-  registerCoordinate(coordinate:Coordinate){
+  updateKings(coordinate:Coordinate):void{
+    console.log("King changed")
+    switch (this.turn) {
+      case "white":
+        this.whiteKingCoordinate = new Coordinate(coordinate.x, coordinate.y);
+        console.log(this.whiteKingCoordinate);
+        break;
+      case "white":
+        this.blackKingCoordinate = new Coordinate(coordinate.x, coordinate.y);
+        console.log(this.blackKingCoordinate);
+        break;
+    }
+  }
+
+  registerCoordinate(coordinate:Coordinate):void{
     console.log(coordinate);
 
-    if(this.state == state.ATTEMPTMOVE){ // if the player is trying to move the piece 
+    if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let validMove = this.isValidMove(coordinate);
       if(validMove){ // if a valid move then change the turn
-        this.board = this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
+        if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece()?.type == "king"){
+          this.updateKings(coordinate);
+        }
+        this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn);
       }
       this.possibleMoves = [];
-      this.state = state.AWAIT;
+      this.state = moveState.AWAIT;
     }
 
-    if(this.state == state.AWAIT){ // if player hasn't clicked on piece
+    if(this.state == moveState.AWAIT){ // if player hasn't clicked on piece
       if(this.selectPiece(coordinate)){ // check it is trying to click a piece 
-        this.state = state.ATTEMPTMOVE; // change status, player is trying to move a piece
+        this.state = moveState.ATTEMPTMOVE; // change status, player is trying to move a piece
         this.prevCoordinate = coordinate; // once status has been changed, the previous move needs to be reference to know what piece the player is trying to move
-        this.possibleMoves = this.getMoves(coordinate);
+        this.possibleMoves = this._availableMoves.getMoves(this.board, coordinate);
       }
     }
   }

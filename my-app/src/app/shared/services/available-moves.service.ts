@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Board } from './game/board/model/board.model';
-import { Coordinate } from './game/board/model/coordinate.model';
+import { Board } from 'src/app/game/board/model/board.model';
+import { Coordinate } from 'src/app/game/board/model/coordinate.model';
 
 import { HelperService } from './helper.service';
 
@@ -10,6 +10,43 @@ import { HelperService } from './helper.service';
 })
 export class AvailableMovesService {
   constructor(private _helperService:HelperService){}
+
+  getMoves(board:Board, coordinate:Coordinate):Coordinate[]{
+    let moves:Coordinate[] = [];
+    switch(board.boxes[coordinate.x][coordinate.y].getPiece().type) {
+      case 'pawn':
+        moves = this.getPawnMoves(coordinate, board);
+        //console.log("Storing possible movements for pawn");
+        //console.log(this.possibleMoves);
+        break;
+      case 'bishop':
+        moves = this.getBishopMoves(coordinate, board);
+        // console.log("Storing possible movements for bishop");
+        // console.log(this.possibleMoves);
+        break;
+      case 'rook':
+        moves = this.getRookMoves(coordinate, board);
+        // console.log("Storing possible movements for rook");
+        // console.log(this.possibleMoves);
+        break;
+      case 'knight':
+        moves = this.getKnightMoves(coordinate, board);
+        // console.log("Storing possible movements for knight");
+        // console.log(this.possibleMoves);
+        break;
+      case 'queen':
+        moves = this.getQueenMoves(coordinate, board);
+        // console.log("Storing possible movements for queen");
+        // console.log(this.possibleMoves);
+        break;
+      case 'king':
+        moves = this.getKingMoves(coordinate, board);
+        // console.log("Storing possible movements for king");
+        // console.log(this.possibleMoves);
+        break;
+    }
+    return moves;
+  }
   getPawnMoves(coordinate:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[coordinate.x][coordinate.y].getPiece();
