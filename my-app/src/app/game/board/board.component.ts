@@ -9,8 +9,4 @@ import { Coordinate } from './model/coordinate.model';
 })
 export class BoardComponent {
   @Input() board:Board;
-  @Output() coordinate = new EventEmitter<Coordinate>();
-  registerCoordinate(coordinate:Coordinate){
-    this.coordinate.emit(coordinate);
-  }
 }

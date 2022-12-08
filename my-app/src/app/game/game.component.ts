@@ -30,6 +30,7 @@ export class GameComponent implements OnInit{
     console.log(this.board);
   }
   ngOnInit(): void {
+    this._updateBoardService.gameMoveUpdate.subscribe(x => {this.registerCoordinate(x)})
   }
   selectPiece(coordinate:Coordinate):boolean{
     if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 

@@ -1,5 +1,5 @@
-<div (click)="sendCoordinates(this.box.coordinate)"
-[ngStyle]="{'width':+width+'px', 'height': +height+'px',
+<div class="chessBox" (click)="sendCoordinates(this.box.coordinate)"
+[ngStyle]="{
 'background-color': this.box.colour}"
 >
 <div *ngIf="this.box.getPiece()?.type=='p'">

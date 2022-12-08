@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { Board } from './game/board/model/board.model';
 import { Coordinate } from './game/board/model/coordinate.model';
 
+import { Subject } from 'rxjs';
+
 @Injectable({
   providedIn: 'root'
 })
 export class UpdateBoardService {
-
+  public gameMoveUpdate: Subject<Coordinate> = new Subject();
   constructor() { }
   movePiece(oldCoordinate:Coordinate, coordinate:Coordinate, board:Board):Board{
     let pieceMoved = board.boxes[oldCoordinate.x][oldCoordinate.y].getPiece();

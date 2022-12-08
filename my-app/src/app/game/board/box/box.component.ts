@@ -1,17 +1,26 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { UpdateBoardService } from 'src/app/update-board.service';
 import { Box } from '../model/box.model';
 import { Coordinate } from '../model/coordinate.model';
+
+
 @Component({
   selector: 'app-box',
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.css']
 })
-export class BoxComponent {
+export class BoxComponent implements OnChanges {
   @Input() box!:Box;
-  @Output() coordinate = new EventEmitter<Coordinate>();
-  width = 50;
-  height = 50;
+  constructor(private _updateBoardService:UpdateBoardService){}
+  ngOnChanges(changes: SimpleChanges): void{
+    console.log(changes["box"]);
+  }
+  // boxColour
+  // pieceType
+  // pieceColour
+
+  // If change then update (this is to get rid of logic in view)
   sendCoordinates(coordinate:Coordinate){ 
-    this.coordinate.emit(coordinate);
+    this._updateBoardService.gameMoveUpdate.next(coordinate);
   }
 }
