@@ -32,6 +32,7 @@ export class GameComponent implements OnInit{
     this.state = state.AWAIT;
     console.log(this.board);
   }
+  
   ngOnInit(): void {
     this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
