@@ -35,6 +35,7 @@ export class GameComponent implements OnInit{
     } 
     return false;
   }
+
   isValidMove(coordinate:Coordinate):boolean{
     let valid = this.possibleMoves.some(element => {
       if (element === coordinate) {
@@ -44,6 +45,7 @@ export class GameComponent implements OnInit{
       }});
       return valid; 
   }
+
   pawnTransform(){
     for (let i = 0; i < 8; i++) {
       if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "p"){
@@ -56,8 +58,10 @@ export class GameComponent implements OnInit{
       }
     }
   }
+
   registerCoordinate(coordinate:Coordinate){
     console.log(coordinate);
+
     if(this.state == state.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let validMove = this.isValidMove(coordinate);
       if(!validMove){ // if is not a valid movement, change the state back
@@ -71,6 +75,7 @@ export class GameComponent implements OnInit{
       }
       this.state = state.AWAIT;
     }
+
     if(this.state == state.AWAIT){ // if player hasn't clicked on piece
       if(this.selectPiece(coordinate)){ // check it is trying to click a piece 
         this.state = state.ATTEMPTMOVE; // change status, player is trying to move a piece
