@@ -6,7 +6,7 @@ export class Box {
     coordinate: Coordinate;
     colour: colour;
     private pieceArr: Piece[];
-    //piece: Piece;
+
     constructor(colour: colour, coordinate:Coordinate) {
         this.pieceArr = [];
         this.coordinate = coordinate;
