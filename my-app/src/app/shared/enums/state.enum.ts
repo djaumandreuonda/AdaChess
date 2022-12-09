@@ -1,3 +1,7 @@
-export enum state {
+export enum moveState {
     AWAIT, ATTEMPTMOVE
+}
+
+export enum checkState {
+    NOTINCHECK, BLACKINCHECK, WHITEINCHECK, BLACKINCHECKMATE, WHITEINCHECKMATE
 }

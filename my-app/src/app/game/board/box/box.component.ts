@@ -1,9 +1,8 @@
 import {Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import { UpdateBoardService } from 'src/app/shared/services/update-board.service';
 
-import { Box } from '../model/box.model';
-import { Coordinate } from '../model/coordinate.model';
-
-import { UpdateBoardService } from 'src/app/update-board.service';
+import { Box } from '../../../shared/model/box.model';
+import { Coordinate } from '../../../shared/model/coordinate.model';
 
 @Component({
   selector: 'app-box',
@@ -14,7 +13,7 @@ export class BoxComponent implements OnChanges {
   @Input() box!:Box;
   constructor(private _updateBoardService:UpdateBoardService){}
   ngOnChanges(changes: SimpleChanges): void{
-    console.log(changes["box"]);
+    //console.log(changes["box"]);
   }
   // boxColour
   // pieceType
