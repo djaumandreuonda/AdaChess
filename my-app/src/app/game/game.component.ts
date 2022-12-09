@@ -6,8 +6,7 @@ import { Piece } from '../shared/model/piece.model';
 
 import { moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
-import { type
- } from '../shared/enums/type.enum';
+import { type } from '../shared/enums/type.enum';
 import { UpdateBoardService } from '../shared/services/update-board.service';
 import { HelperService } from '../shared/services/helper.service';
 import { AvailableMovesService } from '../shared/services/available-moves.service';
@@ -26,7 +25,7 @@ export class GameComponent implements OnInit{
   prevCoordinate:Coordinate;
   possibleMoves:Coordinate[];
 
-  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService:HelperService ){
+  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService: HelperService ){
     this.possibleMoves = [];
     this.board = new Board(); 
     this.blackKingPos = new Coordinate(0,4);
@@ -62,7 +61,6 @@ export class GameComponent implements OnInit{
       this._updateBoardService.movePiece(this.prevCoordinate, move, board); // simulate the move that is trying to be replicated 
       let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
       if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check? 
-        console.log("king will be eaten")
         this._updateBoardService.movePiece(move, this.prevCoordinate, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
         if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
           this.updateKings(this.prevCoordinate);
@@ -72,7 +70,6 @@ export class GameComponent implements OnInit{
       this._updateBoardService.movePiece(move, this.prevCoordinate, board); 
       return true
     }
-    console.log("move not in array")
     return false
   }
 
@@ -114,9 +111,6 @@ export class GameComponent implements OnInit{
     }
   }
 
-  // Checkmate
-  // player cannot make any move (as any move will not prevent a check on their king)
-
   isInCheckMate(turnColour:colour, board:Board){
     let availableMoves:Coordinate[] = this.availableMoves(turnColour, board); // get all possible moves for this player
     for(let i in availableMoves){ // iterate through each move
@@ -126,7 +120,7 @@ export class GameComponent implements OnInit{
       }
     }
     console.log(turnColour, " is in checkmate");
-    alert(this._helperService.getOppositeColour(turnColour) + " is the winner!")
+    alert(`${this._helperService.getOppositeColour(turnColour)} is the winner!`)
     return true // if none were valid, player must be in checkmate
   }
 
@@ -149,13 +143,12 @@ export class GameComponent implements OnInit{
     if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
       if(this.isValidMove(coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board); // update the model by making the move
-        //his.pawnTransform();
+        this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
       this.isInCheckMate(this.turn, this.board);
-      
     }
 
     if(this.state == moveState.AWAIT){ // if player hasn't clicked on piece
