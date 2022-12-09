@@ -4,7 +4,7 @@ import { Board } from '../shared/model/board.model';
 import { Coordinate } from '../shared/model/coordinate.model';
 import { Piece } from '../shared/model/piece.model';
 
-import { checkState, moveState } from '../shared/enums/state.enum';
+import { moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
 import { type
  } from '../shared/enums/type.enum';
@@ -21,7 +21,6 @@ export class GameComponent implements OnInit{
   board:Board; 
   turn:colour;
   state:moveState;
-  checkState: checkState;
   blackKingPos:Coordinate;
   whiteKingPos:Coordinate;
   prevCoordinate:Coordinate;
@@ -34,7 +33,6 @@ export class GameComponent implements OnInit{
     this.whiteKingPos = new Coordinate(7,4);
     this.turn = colour.WHITE;
     this.state = moveState.AWAIT;
-    this.checkState = checkState.NOTINCHECK;
     console.log(this.board);
   }
 
@@ -116,20 +114,6 @@ export class GameComponent implements OnInit{
     }
   }
 
-  // updateCheckStatus(){
-  //   if(this.turn == colour.WHITE && this.kingInCheck(this.blackKingPos, this.turn)){
-  //     console.log("black in check")
-  //     this.checkState = checkState.BLACKINCHECK
-  //   }
-  //   if(this.turn == colour.BLACK && this.kingInCheck(this.whiteKingPos, this.turn)){
-  //     console.log("white in check")
-  //     this.checkState = checkState.WHITEINCHECK
-  //   } else {
-  //     console.log("no one in check")
-  //     this.checkState = checkState.NOTINCHECK
-  //   }
-  // }
-
   // Checkmate
   // player cannot make any move (as any move will not prevent a check on their king)
 
@@ -142,6 +126,7 @@ export class GameComponent implements OnInit{
       }
     }
     console.log(turnColour, " is in checkmate");
+    alert(this._helperService.getOppositeColour(turnColour) + " is the winner!")
     return true // if none were valid, player must be in checkmate
   }
 
@@ -165,7 +150,6 @@ export class GameComponent implements OnInit{
       if(this.isValidMove(coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board); // update the model by making the move
         //his.pawnTransform();
-        //this.updateCheckStatus();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
       }
       this.possibleMoves = []; // empty the possible moves
