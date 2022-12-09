@@ -47,6 +47,7 @@ export class AvailableMovesService {
     }
     return moves;
   }
+
   getPawnMoves(piecePos:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[piecePos.x][piecePos.y].getPiece();
@@ -91,6 +92,7 @@ export class AvailableMovesService {
     
     return possibleMoves;
   }
+
   getRookMoves(piecePos:Coordinate, board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let rook = board.boxes[piecePos.x][piecePos.y].getPiece();
@@ -150,6 +152,7 @@ export class AvailableMovesService {
     
     return possibleMoves;
   }
+
   getBishopMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let bishop = board.boxes[piecePos.x][piecePos.y].getPiece();
@@ -209,6 +212,7 @@ export class AvailableMovesService {
 
     return possibleMoves;
   }
+
   getKnightMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let knight = board.boxes[piecePos.x][piecePos.y].getPiece();
@@ -224,11 +228,13 @@ export class AvailableMovesService {
     }   
     return possibleMoves;
   }
+
   getQueenMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = [...this.getRookMoves(piecePos, board), ...this.getBishopMoves(piecePos, board)]; 
 
     return possibleMoves;
   }
+  
   getKingMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let king = board.boxes[piecePos.x][piecePos.y].getPiece();
