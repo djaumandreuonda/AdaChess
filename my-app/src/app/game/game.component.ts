@@ -55,19 +55,19 @@ export class GameComponent implements OnInit{
   // - if in check, only allow moves that prevent that check
   isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
     if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
-      if(board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece()?.type == "king"){
+      if(board.boxes[piecePos.x][piecePos.y].getPiece()?.type == "king"){
         this.updateKings(move);
       }
-      this._updateBoardService.movePiece(this.prevCoordinate, move, board); // simulate the move that is trying to be replicated 
+      this._updateBoardService.movePiece(piecePos, move, board); // simulate the move that is trying to be replicated 
       let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
       if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check? 
-        this._updateBoardService.movePiece(move, this.prevCoordinate, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
+        this._updateBoardService.movePiece(move, piecePos, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
         if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
-          this.updateKings(this.prevCoordinate);
+          this.updateKings(piecePos);
         }
         return false
       }
-      this._updateBoardService.movePiece(move, this.prevCoordinate, board); 
+      this._updateBoardService.movePiece(move, piecePos, board); 
       return true
     }
     return false
