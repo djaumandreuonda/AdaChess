@@ -4,7 +4,7 @@ import { Board } from './board/model/board.model';
 import { Coordinate } from './board/model/coordinate.model';
 import { Piece } from './board/model/piece.model';
 
-import { moveState } from '../shared/enums/state.enum';
+import { checkState, moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
 import { type } from '../shared/enums/type.enum';
 
@@ -21,6 +21,7 @@ export class GameComponent implements OnInit{
   board:Board; 
   turn:colour;
   state:moveState;
+  checkState: checkState;
   blackKingCoordinate:Coordinate;
   whiteKingCoordinate:Coordinate;
   prevCoordinate:Coordinate;
@@ -33,6 +34,7 @@ export class GameComponent implements OnInit{
     this.whiteKingCoordinate = new Coordinate(7,4);
     this.turn = colour.WHITE;
     this.state = moveState.AWAIT;
+    this.checkState = checkState.NOTINCHECK;
     console.log(this.board);
   }
 
@@ -56,11 +58,11 @@ export class GameComponent implements OnInit{
   // - if in check, only allow moves that prevent that check
   isValidMove(move:Coordinate):boolean{
     if (this._helperService.isInArray(this.possibleMoves, move)){
-      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.kingWillBeEaten(move)){
+      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.kingInCheck(move, this._helperService.getOppositeColour(this.turn))){
         return false
       }
       this._updateBoardService.movePiece(this.prevCoordinate, move, this.board); 
-      if(this.turn == "white"? this.kingWillBeEaten(this.whiteKingCoordinate) : this.kingWillBeEaten(this.blackKingCoordinate) ){
+      if(this.turn == "white"? this.kingInCheck(this.whiteKingCoordinate, this._helperService.getOppositeColour(this.turn)) : this.kingInCheck(this.blackKingCoordinate, this._helperService.getOppositeColour(this.turn))){
         console.log("king will be eaten")
         this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); 
         return false
@@ -71,11 +73,11 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  kingWillBeEaten(kingPos:Coordinate):boolean{
+  kingInCheck(kingPos:Coordinate, turn:colour):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = this.board.boxes[i][j].getPiece();
-        if(currentPiece?.colour == this._helperService.getOppositeColour(this.turn) && currentPiece?.type != "pawn"){   
+        if(currentPiece?.colour == turn && currentPiece?.type != "pawn"){   
           if(this._helperService.isInArray(this._availableMoves.getMoves(this.board, this.board.boxes[i][j].coordinate), kingPos)){
             return true
           }
@@ -99,7 +101,6 @@ export class GameComponent implements OnInit{
   }
 
   updateKings(coordinate:Coordinate):void{
-    console.log("King changed")
     switch (this.turn) {
       case "white":
         this.whiteKingCoordinate = new Coordinate(coordinate.x, coordinate.y);
@@ -112,6 +113,22 @@ export class GameComponent implements OnInit{
     }
   }
 
+  updateCheckStatus(){
+    if(this.turn == colour.WHITE && this.kingInCheck(this.blackKingCoordinate, this.turn)){
+      console.log("black in check")
+      this.checkState = checkState.BLACKINCHECK
+    }
+    if(this.turn == colour.BLACK && this.kingInCheck(this.whiteKingCoordinate, this.turn)){
+      console.log("white in check")
+      this.checkState = checkState.WHITEINCHECK
+    } else {
+      console.log("no one in check")
+      this.checkState = checkState.NOTINCHECK
+    }
+  }
+
+  
+
   registerCoordinate(coordinate:Coordinate):void{
     console.log(coordinate);
 
@@ -123,6 +140,7 @@ export class GameComponent implements OnInit{
         }
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
         this.pawnTransform();
+        this.updateCheckStatus();
         this.turn = this._helperService.getOppositeColour(this.turn);
       }
       this.possibleMoves = [];
