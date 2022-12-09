@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
-import { Board } from 'src/app/game/board/model/board.model';
-import { Coordinate } from 'src/app/game/board/model/coordinate.model';
+import { Board } from 'src/app/shared/model/board.model';
+import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 import { HelperService } from './helper.service';
 

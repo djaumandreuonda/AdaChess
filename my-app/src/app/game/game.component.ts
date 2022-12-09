@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Board } from './board/model/board.model';
-import { Coordinate } from './board/model/coordinate.model';
-import { Piece } from './board/model/piece.model';
+import { Board } from '../shared/model/board.model';
+import { Coordinate } from '../shared/model/coordinate.model';
+import { Piece } from '../shared/model/piece.model';
 
 import { checkState, moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
@@ -58,11 +58,12 @@ export class GameComponent implements OnInit{
   // - if in check, only allow moves that prevent that check
   isValidMove(move:Coordinate):boolean{
     if (this._helperService.isInArray(this.possibleMoves, move)){
-      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.kingInCheck(move, this._helperService.getOppositeColour(this.turn))){
-        return false
-      }
+      // if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece().type == "king" && this.kingInCheck(move, this._helperService.getOppositeColour(this.turn))){
+      //   console.log("king forbidden to move")
+      //   return false
+      // }
       this._updateBoardService.movePiece(this.prevCoordinate, move, this.board); 
-      if(this.turn == "white"? this.kingInCheck(this.whiteKingCoordinate, this._helperService.getOppositeColour(this.turn)) : this.kingInCheck(this.blackKingCoordinate, this._helperService.getOppositeColour(this.turn))){
+      if(this.turn == colour.WHITE? this.kingInCheck(this.whiteKingCoordinate, this._helperService.getOppositeColour(this.turn)) : this.kingInCheck(this.blackKingCoordinate, this._helperService.getOppositeColour(this.turn))){
         console.log("king will be eaten")
         this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); 
         return false
@@ -73,12 +74,12 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  kingInCheck(kingPos:Coordinate, turn:colour):boolean{
+  kingInCheck(kingPos:Coordinate, kingColour:colour):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
-        let currentPiece = this.board.boxes[i][j].getPiece();
-        if(currentPiece?.colour == turn && currentPiece?.type != "pawn"){   
-          if(this._helperService.isInArray(this._availableMoves.getMoves(this.board, this.board.boxes[i][j].coordinate), kingPos)){
+        let currentPiece = this.board.boxes[i][j].getPiece(); // This is the piece we are looking at 
+        if(currentPiece?.colour == this._helperService.getOppositeColour(kingColour) && currentPiece?.type != "pawn"){  // if the piece is equal to the colour of the king given and is not a pawn  
+          if(this._helperService.isInArray(this._availableMoves.getMoves(this.board, this.board.boxes[i][j].coordinate), kingPos)){ // look at the possible moves this piece can take, if the pos of king given is in that range then return true. It would kill the king 
             return true
           }
         }
@@ -87,18 +88,18 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  pawnTransform():void{
-    for (let i = 0; i < 8; i++) {
-      if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "pawn"){
-        this.board.boxes[0][i].emptyBox();
-        this.board.boxes[0][i].setPiece(new Piece(this.turn, type.queen));
-      }
-      if(this.board.boxes[7][i].getPiece()?.colour == this.turn && this.board.boxes[7][i].getPiece()?.type == "pawn"){
-        this.board.boxes[7][i].emptyBox();
-        this.board.boxes[7][i].setPiece(new Piece(this.turn, type.queen));
-      }
-    }
-  }
+  // pawnTransform():void{
+  //   for (let i = 0; i < 8; i++) {
+  //     if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "pawn"){
+  //       this.board.boxes[0][i].emptyBox();
+  //       this.board.boxes[0][i].setPiece(new Piece(this.turn, type.queen));
+  //     }
+  //     if(this.board.boxes[7][i].getPiece()?.colour == this.turn && this.board.boxes[7][i].getPiece()?.type == "pawn"){
+  //       this.board.boxes[7][i].emptyBox();
+  //       this.board.boxes[7][i].setPiece(new Piece(this.turn, type.queen));
+  //     }
+  //   }
+  // }
 
   updateKings(coordinate:Coordinate):void{
     switch (this.turn) {
@@ -113,21 +114,19 @@ export class GameComponent implements OnInit{
     }
   }
 
-  updateCheckStatus(){
-    if(this.turn == colour.WHITE && this.kingInCheck(this.blackKingCoordinate, this.turn)){
-      console.log("black in check")
-      this.checkState = checkState.BLACKINCHECK
-    }
-    if(this.turn == colour.BLACK && this.kingInCheck(this.whiteKingCoordinate, this.turn)){
-      console.log("white in check")
-      this.checkState = checkState.WHITEINCHECK
-    } else {
-      console.log("no one in check")
-      this.checkState = checkState.NOTINCHECK
-    }
-  }
-
-  
+  // updateCheckStatus(){
+  //   if(this.turn == colour.WHITE && this.kingInCheck(this.blackKingCoordinate, this.turn)){
+  //     console.log("black in check")
+  //     this.checkState = checkState.BLACKINCHECK
+  //   }
+  //   if(this.turn == colour.BLACK && this.kingInCheck(this.whiteKingCoordinate, this.turn)){
+  //     console.log("white in check")
+  //     this.checkState = checkState.WHITEINCHECK
+  //   } else {
+  //     console.log("no one in check")
+  //     this.checkState = checkState.NOTINCHECK
+  //   }
+  // }
 
   registerCoordinate(coordinate:Coordinate):void{
     console.log(coordinate);
@@ -139,8 +138,8 @@ export class GameComponent implements OnInit{
           this.updateKings(coordinate);
         }
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board);
-        this.pawnTransform();
-        this.updateCheckStatus();
+        //his.pawnTransform();
+        //this.updateCheckStatus();
         this.turn = this._helperService.getOppositeColour(this.turn);
       }
       this.possibleMoves = [];

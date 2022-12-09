@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-import { Coordinate } from 'src/app/game/board/model/coordinate.model';
+import { Coordinate } from 'src/app/shared/model/coordinate.model';
 
 import { HelperService } from './helper.service';
 
-fdescribe('HelperService', () => {
+describe('HelperService', () => {
   let service: HelperService;
   beforeEach(() => {
     TestBed.configureTestingModule({});

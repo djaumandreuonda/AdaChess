@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { Board } from './model/board.model';
+import { Board } from '../../shared/model/board.model';
 
 @Component({
   selector: 'app-board',
