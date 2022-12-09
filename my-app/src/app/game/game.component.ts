@@ -6,7 +6,8 @@ import { Piece } from '../shared/model/piece.model';
 
 import { checkState, moveState } from '../shared/enums/state.enum';
 import { colour } from '../shared/enums/colour.enum';
-
+import { type
+ } from '../shared/enums/type.enum';
 import { UpdateBoardService } from '../shared/services/update-board.service';
 import { HelperService } from '../shared/services/helper.service';
 import { AvailableMovesService } from '../shared/services/available-moves.service';
@@ -55,24 +56,25 @@ export class GameComponent implements OnInit{
   //     this would mean recreating the move I'm trying to do 
   //     If king coordinate is fobidden move, then not valid 
   // - if in check, only allow moves that prevent that check
-  isValidMove(move:Coordinate):boolean{
-    if (this._helperService.isInArray(this.possibleMoves, move)){ // if move is an available move for the piece selected
-      if(this.board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece()?.type == "king"){
+  isValidMove(move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
+    if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
+      if(board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece()?.type == "king"){
         this.updateKings(move);
       }
-      this._updateBoardService.movePiece(this.prevCoordinate, move, this.board); // simulate the move that is trying to be replicated 
+      this._updateBoardService.movePiece(this.prevCoordinate, move, board); // simulate the move that is trying to be replicated 
       let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
       if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check? 
         console.log("king will be eaten")
-        this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
-        if(this.board.boxes[move.x][move.y].getPiece()?.type == "king"){
+        this._updateBoardService.movePiece(move, this.prevCoordinate, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
+        if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
           this.updateKings(this.prevCoordinate);
         }
         return false
       }
-      this._updateBoardService.movePiece(move, this.prevCoordinate, this.board); 
+      this._updateBoardService.movePiece(move, this.prevCoordinate, board); 
       return true
     }
+    console.log("move not in array")
     return false
   }
 
@@ -90,28 +92,26 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  // pawnTransform():void{
-  //   for (let i = 0; i < 8; i++) {
-  //     if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "pawn"){
-  //       this.board.boxes[0][i].emptyBox();
-  //       this.board.boxes[0][i].setPiece(new Piece(this.turn, type.queen));
-  //     }
-  //     if(this.board.boxes[7][i].getPiece()?.colour == this.turn && this.board.boxes[7][i].getPiece()?.type == "pawn"){
-  //       this.board.boxes[7][i].emptyBox();
-  //       this.board.boxes[7][i].setPiece(new Piece(this.turn, type.queen));
-  //     }
-  //   }
-  // }
+  pawnTransform():void{
+    for (let i = 0; i < 8; i++) {
+      if(this.board.boxes[0][i].getPiece()?.colour == this.turn && this.board.boxes[0][i].getPiece()?.type == "pawn"){
+        this.board.boxes[0][i].emptyBox();
+        this.board.boxes[0][i].setPiece(new Piece(this.turn, type.queen));
+      }
+      if(this.board.boxes[7][i].getPiece()?.colour == this.turn && this.board.boxes[7][i].getPiece()?.type == "pawn"){
+        this.board.boxes[7][i].emptyBox();
+        this.board.boxes[7][i].setPiece(new Piece(this.turn, type.queen));
+      }
+    }
+  }
 
   updateKings(newPos:Coordinate):void{
     switch (this.turn) {
       case "white":
         this.whiteKingPos = new Coordinate(newPos.x, newPos.y);
-        console.log(this.whiteKingPos);
         break;
       case "black":
         this.blackKingPos = new Coordinate(newPos.x, newPos.y);
-        console.log(this.blackKingPos);
         break;
     }
   }
@@ -130,11 +130,39 @@ export class GameComponent implements OnInit{
   //   }
   // }
 
+  // Checkmate
+  // player cannot make any move (as any move will not prevent a check on their king)
+
+  isInCheckMate(turnColour:colour, board:Board){
+    let availableMoves:Coordinate[] = this.availableMoves(turnColour, board); // get all possible moves for this player
+    for(let i in availableMoves){ // iterate through each move
+      if(this.isValidMove(availableMoves[i], availableMoves, board)){ // if any move is valid
+        console.log("no one in check mate")
+        return false // player isn't in check mate
+      }
+    }
+    console.log(turnColour, " is in checkmate");
+    return true // if none were valid, player must be in checkmate
+  }
+
+  availableMoves(turnColour:colour, board:Board){
+    let availableMoves:Coordinate[] = [];
+    for (var i: number = 0; i < 8; i++) {
+      for (var j: number = 0; j < 8; j++) {
+        let currentBox = board.boxes[i][j]
+        if(currentBox.getPiece()?.colour == turnColour){
+          availableMoves.push.apply(availableMoves, this._availableMoves.getMoves(board, currentBox.coordinate));
+        }
+      }
+    }
+    return availableMoves;
+  }
+
   registerCoordinate(coordinate:Coordinate):void{
     console.log(coordinate);
 
     if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
-      if(this.isValidMove(coordinate)){ // if a valid move then change the turn
+      if(this.isValidMove(coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board); // update the model by making the move
         //his.pawnTransform();
         //this.updateCheckStatus();
@@ -142,6 +170,8 @@ export class GameComponent implements OnInit{
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
+      this.isInCheckMate(this.turn, this.board);
+      
     }
 
     if(this.state == moveState.AWAIT){ // if player hasn't clicked on piece
