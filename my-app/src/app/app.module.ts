@@ -14,9 +14,6 @@ import { UpdateBoardService } from './shared/services/update-board.service';
 import { HelperService } from './shared/services/helper.service';
 import { AvailableMovesService } from './shared/services/available-moves.service';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,

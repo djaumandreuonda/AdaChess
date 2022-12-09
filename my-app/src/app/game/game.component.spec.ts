@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AppModule } from '../app.module';
 
 import { GameComponent } from './game.component';
 
@@ -8,7 +9,7 @@ fdescribe('GameComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GameComponent ]
+      imports: [AppModule]
     })
     .compileComponents();
 
@@ -17,7 +18,10 @@ fdescribe('GameComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
+  describe("", () => {
+    it('', () => {
+      console.log(component.updateKings)}),
+      it('', () => {
+        })
+  })
 });
