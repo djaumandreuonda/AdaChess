@@ -53,7 +53,7 @@ export class GameComponent implements OnInit{
   //     this would mean recreating the move I'm trying to do 
   //     If king coordinate is fobidden move, then not valid 
   // - if in check, only allow moves that prevent that check
-  isValidMove(move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
+  isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
     if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
       if(board.boxes[this.prevCoordinate.x][this.prevCoordinate.y].getPiece()?.type == "king"){
         this.updateKings(move);
@@ -114,10 +114,10 @@ export class GameComponent implements OnInit{
   isInCheckMate(turnColour:colour, board:Board){
     let availableMoves:Coordinate[] = this.availableMoves(turnColour, board); // get all possible moves for this player
     for(let i in availableMoves){ // iterate through each move
-      if(this.isValidMove(availableMoves[i], availableMoves, board)){ // if any move is valid
-        console.log("no one in check mate")
-        return false // player isn't in check mate
-      }
+      // if(this.isValidMove(availableMoves[i], availableMoves, board)){ // if any move is valid
+      //   console.log("no one in check mate")
+      //   return false // player isn't in check mate
+      // }
     }
     console.log(turnColour, " is in checkmate");
     alert(`${this._helperService.getOppositeColour(turnColour)} is the winner!`)
@@ -141,14 +141,15 @@ export class GameComponent implements OnInit{
     console.log(coordinate);
 
     if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
-      if(this.isValidMove(coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
+      if(this.isValidMove(this.prevCoordinate, coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board); // update the model by making the move
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
+        //this.isInCheckMate(this.turn, this.board);
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
-      this.isInCheckMate(this.turn, this.board);
+      
     }
 
     if(this.state == moveState.AWAIT){ // if player hasn't clicked on piece
