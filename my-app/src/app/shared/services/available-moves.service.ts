@@ -11,44 +11,45 @@ import { HelperService } from './helper.service';
 export class AvailableMovesService {
   constructor(private _helperService:HelperService){}
 
-  getMoves(board:Board, piecePos:Coordinate):Coordinate[]{
+  getMoves(board:Board, piecePos:Coordinate, getKillerMoves:boolean = false):Coordinate[]{
     let moves:Coordinate[] = [];
     switch(board.boxes[piecePos.x][piecePos.y].getPiece().type) {
       case 'pawn':
         moves = this.getPawnMoves(piecePos, board);
-        //console.log("Storing possible movements for pawn");
-        //console.log(this.possibleMoves);
+        if(getKillerMoves){
+          moves = this.filterPawnKillerMoves(piecePos, moves);
+        }
         break;
       case 'bishop':
         moves = this.getBishopMoves(piecePos, board);
-        // console.log("Storing possible movements for bishop");
-        // console.log(this.possibleMoves);
         break;
       case 'rook':
         moves = this.getRookMoves(piecePos, board);
-        // console.log("Storing possible movements for rook");
-        // console.log(this.possibleMoves);
         break;
       case 'knight':
         moves = this.getKnightMoves(piecePos, board);
-        // console.log("Storing possible movements for knight");
-        // console.log(this.possibleMoves);
         break;
       case 'queen':
         moves = this.getQueenMoves(piecePos, board);
-        // console.log("Storing possible movements for queen");
-        // console.log(this.possibleMoves);
         break;
       case 'king':
         moves = this.getKingMoves(piecePos, board);
-        // console.log("Storing possible movements for king");
-        // console.log(this.possibleMoves);
         break;
     }
     return moves;
   }
 
-  getPawnMoves(piecePos:Coordinate, board:Board):Coordinate[]{   
+  private filterPawnKillerMoves(pawnPos:Coordinate, possibleMoves:Coordinate[]):Coordinate[]{
+    let killerMoves:Coordinate[] = []
+    for(let i in possibleMoves){
+      if(possibleMoves[i].y != pawnPos.y){
+        killerMoves.push(possibleMoves[i])
+      }
+    }
+    return killerMoves;
+  }
+
+  private getPawnMoves(piecePos:Coordinate, board:Board):Coordinate[]{   
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[piecePos.x][piecePos.y].getPiece();
 
@@ -93,7 +94,7 @@ export class AvailableMovesService {
     return possibleMoves;
   }
 
-  getRookMoves(piecePos:Coordinate, board:Board):Coordinate[]{
+  private getRookMoves(piecePos:Coordinate, board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let rook = board.boxes[piecePos.x][piecePos.y].getPiece();
 
@@ -153,7 +154,7 @@ export class AvailableMovesService {
     return possibleMoves;
   }
 
-  getBishopMoves(piecePos:Coordinate,board:Board):Coordinate[]{
+  private getBishopMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let bishop = board.boxes[piecePos.x][piecePos.y].getPiece();
     
@@ -213,7 +214,7 @@ export class AvailableMovesService {
     return possibleMoves;
   }
 
-  getKnightMoves(piecePos:Coordinate,board:Board):Coordinate[]{
+  private getKnightMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let knight = board.boxes[piecePos.x][piecePos.y].getPiece();
 
@@ -229,13 +230,13 @@ export class AvailableMovesService {
     return possibleMoves;
   }
 
-  getQueenMoves(piecePos:Coordinate,board:Board):Coordinate[]{
+  private getQueenMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = [...this.getRookMoves(piecePos, board), ...this.getBishopMoves(piecePos, board)]; 
 
     return possibleMoves;
   }
   
-  getKingMoves(piecePos:Coordinate,board:Board):Coordinate[]{
+  private getKingMoves(piecePos:Coordinate,board:Board):Coordinate[]{
     let possibleMoves:Coordinate[] = []; 
     let king = board.boxes[piecePos.x][piecePos.y].getPiece();
 
