@@ -39,8 +39,8 @@ export class GameComponent implements OnInit{
     this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
 
-  selectPiece(coordinate:Coordinate):boolean{
-    if(this.board.boxes[coordinate.x][coordinate.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
+  selectPiece(piecePos:Coordinate):boolean{
+    if(this.board.boxes[piecePos.x][piecePos.y].getPiece()?.colour == this.turn){ // if the player is clicking on one of their pieces 
       return true; // assume player is trying to select a piece
     } 
     return false;
@@ -55,17 +55,21 @@ export class GameComponent implements OnInit{
   // - if in check, only allow moves that prevent that check
   isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
     if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
-      if(board.boxes[piecePos.x][piecePos.y].getPiece()?.type == "king"){
-        this.updateKings(move);
+      // Replicate the move the user is trying to do
+      if(board.boxes[piecePos.x][piecePos.y].getPiece()?.type == "king"){ 
+        this.updateKings(move);//simulates a change in the king (it is now the new coordinate)
       }
       this._updateBoardService.movePiece(piecePos, move, board); // simulate the move that is trying to be replicated 
       let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
-      if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check? 
+      if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check as a result of a move? 
         this._updateBoardService.movePiece(move, piecePos, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
         if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
-          this.updateKings(piecePos);
+          this.updateKings(piecePos); // resets king to its old position
         }
         return false
+      }
+      if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
+        this.updateKings(piecePos); // resets king to its old position
       }
       this._updateBoardService.movePiece(move, piecePos, board); 
       return true
@@ -110,7 +114,7 @@ export class GameComponent implements OnInit{
         break;
     }
   }
-
+  // isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], board:Board)
   isInCheckMate(turnColour:colour, board:Board){
     let availableMoves:Coordinate[] = this.availableMoves(turnColour, board); // get all possible moves for this player
     for(let i in availableMoves){ // iterate through each move
