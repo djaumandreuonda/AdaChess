@@ -48,41 +48,31 @@ export class GameComponent implements OnInit{
 
   // Valid move:
   // - valid move is inside the possible moves 
-  // - if king, then is not a forbidden move 
   // - valid move does not cause a check on your king 
-  //     this would mean recreating the move I'm trying to do 
-  //     If king coordinate is fobidden move, then not valid 
-  // - if in check, only allow moves that prevent that check
-  isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], board:Board):boolean{
+
+  isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], kingPos:Coordinate, board:Board):boolean{
     if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
       // Replicate the move the user is trying to do
-      if(board.boxes[piecePos.x][piecePos.y].getPiece()?.type == "king"){ 
-        this.updateKings(move);//simulates a change in the king (it is now the new coordinate)
+      let mockBoard = this._helperService.cloneBoard(board);
+      if(board.boxes[piecePos.x][piecePos.y].getPiece()?.type == "king"){ // if the piece is a king 
+        kingPos = move; // update the king position to the move it will move to
       }
-      this._updateBoardService.movePiece(piecePos, move, board); // simulate the move that is trying to be replicated 
-      let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
-      if(this.kingInCheck(currentTurnKingPos, this.turn)){ // would my king be in check as a result of a move? 
-        this._updateBoardService.movePiece(move, piecePos, board); // un-do move and return false, you are not allowed to make move that would cause your king to be in jeapordy
-        if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
-          this.updateKings(piecePos); // resets king to its old position
-        }
+      mockBoard = this._updateBoardService.movePiece(piecePos, move, mockBoard); // simulate the move that is trying to be replicated 
+      if(this.kingInCheck(kingPos, this.turn, mockBoard)){ // would my king be in check as a result of a move? 
+         // You are not allowed to make move that would cause your king to be in jeapordy
         return false
       }
-      if(board.boxes[move.x][move.y].getPiece()?.type == "king"){
-        this.updateKings(piecePos); // resets king to its old position
-      }
-      this._updateBoardService.movePiece(move, piecePos, board); 
       return true
     }
     return false
   }
 
-  kingInCheck(kingPos:Coordinate, kingColour:colour):boolean{
+  kingInCheck(kingPos:Coordinate, kingColour:colour, board:Board):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
-        let currentPiece = this.board.boxes[i][j].getPiece(); // This is the piece we are looking at 
+        let currentPiece = board.boxes[i][j].getPiece(); // This is the piece we are looking at 
         if(currentPiece?.colour == this._helperService.getOppositeColour(kingColour) && currentPiece?.type != "pawn"){  // if the piece is an enemy piece and is not a pawn
-          if(this._helperService.isInArray(this._availableMoves.getMoves(this.board, this.board.boxes[i][j].coordinate), kingPos)){ // look at the possible moves this piece can take, if the pos of king given is in that range then return true. It would kill the king 
+          if(this._helperService.isInArray(this._availableMoves.getMoves(board, board.boxes[i][j].coordinate), kingPos)){ // look at the possible moves this piece can take, if the pos of king given is in that range then return true. It would kill the king 
             return true
           }
         }
@@ -145,7 +135,8 @@ export class GameComponent implements OnInit{
     console.log(coordinate);
 
     if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
-      if(this.isValidMove(this.prevCoordinate, coordinate, this.possibleMoves, this.board)){ // if a valid move then change the turn
+      let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
+      if(this.isValidMove(this.prevCoordinate, coordinate, this.possibleMoves, currentTurnKingPos, this.board)){ // if a valid move then change the turn
         this._updateBoardService.movePiece(this.prevCoordinate, coordinate, this.board); // update the model by making the move
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
