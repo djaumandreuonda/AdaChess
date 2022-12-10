@@ -43,8 +43,8 @@ fdescribe('HelperService', () => {
       expect(service.isInArray(array, itemToFind)).toBeFalsy()
     })
   })
-  describe("cloneObject", () => {
-    it('should clone a board model', () => {
+  describe("cloneBoard", () => {
+    it('should clone a board model without affecting the original', () => {
       let board = new Board();
       let board2 = board;
 
