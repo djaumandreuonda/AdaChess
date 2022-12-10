@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { Coordinate } from 'src/app/shared/model/coordinate.model';
 import { colour } from '../enums/colour.enum';
+import { Board } from '../model/board.model';
 
 import { HelperService } from './helper.service';
 
@@ -40,6 +41,19 @@ fdescribe('HelperService', () => {
       array.push(new Coordinate(0,5));
       let itemToFind = new Coordinate(0,6);
       expect(service.isInArray(array, itemToFind)).toBeFalsy()
+    })
+  })
+  describe("cloneObject", () => {
+    it('should clone a board model', () => {
+      let board = new Board();
+      let board2 = board;
+
+      let clonedBoard = service.cloneBoard(board);
+      clonedBoard.boxes[0][0].emptyBox();
+
+      expect(board.boxes[0][0].isEmpty()).toBeFalsy();
+      expect(board2.boxes[0][0].isEmpty()).toBeFalsy();
+      expect(clonedBoard.boxes[0][0].isEmpty()).toBeTruthy();
     })
   })
 });
