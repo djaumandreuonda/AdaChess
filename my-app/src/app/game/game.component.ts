@@ -32,7 +32,6 @@ export class GameComponent implements OnInit{
     this.whiteKingPos = new Coordinate(7,4);
     this.turn = colour.WHITE;
     this.state = moveState.AWAIT;
-    console.log(this.board);
   }
 
   ngOnInit(): void {
@@ -126,8 +125,6 @@ export class GameComponent implements OnInit{
   }
 
   registerCoordinate(coordinate:Coordinate):void{
-    console.log(coordinate);
-
     if(this.state == moveState.ATTEMPTMOVE){ // if the player is trying to move the piece 
       let currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos; // get the king pos of the current player
       if(this.isValidMove(this.prevCoordinate, coordinate, this.possibleMoves, currentTurnKingPos, this.board)){ // if a valid move then change the turn
