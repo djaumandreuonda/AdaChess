@@ -72,7 +72,7 @@ export class GameComponent implements OnInit{
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = board.boxes[i][j].getPiece(); // This is the piece we are looking at 
         if(currentPiece?.colour == this._helperService.getOppositeColour(kingColour)){  // if the piece is an enemy piece and is not a pawn
-          if(this._helperService.isInArray(this._availableMoves.getMoves(board, board.boxes[i][j].coordinate, true), kingPos)){ // look at the possible moves this piece can take, if the pos of king given is in that range then return true. It would kill the king 
+          if(this._helperService.isInArray(this._availableMoves.getMoves(board, board.boxes[i][j].coordinate, true), kingPos)){ // if the king position is in the array of possible moves then return true as the king would be in check 
             return true
           }
         }
@@ -106,12 +106,6 @@ export class GameComponent implements OnInit{
   }
 
   isInCheckMate(kingPos:Coordinate, board:Board):boolean{
-    //  ------------------------------------------------------------------------------
-    // --------------------------------------------------------------------------------
-    // apparenlty this king sometimes doesn't return a piece, there is probably something wrong with how I give the king pos 
-
-    //----------------------------------------------------------------------------------
-    console.log(board.boxes[kingPos.x][kingPos.y])
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
@@ -120,7 +114,6 @@ export class GameComponent implements OnInit{
           let availableMoves = this._availableMoves.getMoves(board, currentBox.coordinate); // get the moves possible for this piece 
           for(let i in availableMoves){ // iterate through each move
             if(this.isValidMove(currentBox.coordinate, availableMoves[i], availableMoves, kingPos, board)){ // if any move is valid
-              console.log("no one in check mate")
               return false; // player isn't in check mate
             }
           }
@@ -128,6 +121,7 @@ export class GameComponent implements OnInit{
       }
     }
     alert(`${this._helperService.getOppositeColour(turnColour)} is the winner!`)
+    // if the player can't make any valid move, return true
     return true;
   }
 
