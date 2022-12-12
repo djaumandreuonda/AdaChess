@@ -8,7 +8,7 @@ import { Coordinate } from 'src/app/shared/model/coordinate.model';
 })
 export class UpdateBoardService {
   public gameMoveUpdate: Subject<Coordinate> = new Subject();
-  constructor() { }
+
   movePiece(oldCoordinate:Coordinate, coordinate:Coordinate, board:Board):Board{
     let pieceMoved = board.boxes[oldCoordinate.x][oldCoordinate.y].getPiece();
     board.boxes[oldCoordinate.x][oldCoordinate.y].emptyBox(); 

@@ -45,10 +45,6 @@ export class GameComponent implements OnInit{
     return false;
   }
 
-  // Valid move:
-  // - valid move is inside the possible moves for that piece
-  // - valid move does not cause a check on your king 
-
   isValidMove(piecePos:Coordinate, move:Coordinate, availableMoves:Coordinate[], kingPos:Coordinate, board:Board):boolean{
     if (this._helperService.isInArray(availableMoves, move)){ // if move is an available move for the piece selected
       // Replicate the move the user is trying to do
