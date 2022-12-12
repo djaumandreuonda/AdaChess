@@ -1,10 +1,19 @@
-@startuml classes
+@startuml AdaChess
 
-title Classes - Class Diagram
+title AdaChess
 
-class Game{
-  +Int turn
-  +boolean end
+class Game {
+  +Board board 
+  +colour turn
+  +isValidMove(Coordinate move)
+  +forbiddenMoves(Coordinate piece)
+  +getMoves(Piece piece)
+  +Move(Piece piece, Coordinate move)
+}
+
+enum colour {
+  + white
+  + black
 }
 
 class Coordinate {
@@ -15,7 +24,7 @@ class Coordinate {
 class Box {
   +Coordinate coordinate
   +boolean occupied
-  +Colour colour
+  +colour colour
   +Piece[] piece
   +isOccupied()
   +reset()
@@ -26,10 +35,11 @@ class Box {
 class Board{
   +Box[] boxes
   +Int size
+  +populateBoard()
   +printBoard()
 }
 
-class Piece {
+abstract class Piece {
   +Colour:colour
   +Coordinate:coordinate
   +Type:type
@@ -40,6 +50,38 @@ class Pawn implements Piece{
   +Box[] possibleMoves
   +getPossibleMoves()
 }
+
+class Bishop implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+class Rook implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+class Knight implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+class Queen implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+class King implements Piece{
+  +Box[] possibleMoves
+  +getPossibleMoves()
+}
+
+Game *-- Board
+Board *-- Box
+Box *-- Coordinate
+Piece *-- Coordinate
+Box *-- colour
+Piece *-- colour
 
 
 @enduml
