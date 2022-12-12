@@ -1,4 +1,4 @@
-@startuml
+@startuml AdaChess
 
 title AdaChess
 
@@ -71,15 +71,9 @@ package Controller <<Rectangle>> {
 }
 
 
-
-
-
-
-
-BoardComponent *-- Board : consumed by
 Board *-- Box
 Box *-- Coordinate
-Piece *-- Coordinate
+Box *-- Piece
 Box *-- colour
 Piece *-- colour
 Piece *-- type
