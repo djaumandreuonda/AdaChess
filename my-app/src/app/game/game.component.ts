@@ -10,11 +10,10 @@ import { type } from '../shared/enums/type.enum';
 import { UpdateBoardService } from '../shared/services/update-board.service';
 import { HelperService } from '../shared/services/helper.service';
 import { AvailableMovesService } from '../shared/services/available-moves.service';
-import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 import { ModalContentComponent } from './board/modal-content.component';
 
 @Component({
-  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
@@ -104,10 +103,10 @@ export class GameComponent implements OnInit{
     }
   }
 
-  openModalWithComponent(kingPos:Coordinate, board:Board) {
+  openGameOverModal(kingPos:Coordinate, board:Board) {
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
     if(this.isInStaleMate(kingPos, board, turnColour) && this.kingInCheck(kingPos, turnColour, board)){
-      this.bsModalRef = this._modalService.show(ModalContentComponent);
+      this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
       this.bsModalRef.content.gameOverMessage = turnColour + " has won by checkmate!";
     }
   }
@@ -141,7 +140,7 @@ export class GameComponent implements OnInit{
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
         currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos;
-        this.openModalWithComponent(currentTurnKingPos, this.board);
+        this.openGameOverModal(currentTurnKingPos, this.board);
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
@@ -157,5 +156,4 @@ export class GameComponent implements OnInit{
     }
   }
 }
-
 

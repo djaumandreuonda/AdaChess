@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 @Component({
     selector: 'modal-content',
@@ -13,17 +13,16 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
       <p>{{ gameOverMessage }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" (click)="bsModalRef.hide()">Close</button>
-        <button type="button" class="btn btn-primary" (click)="bsModalRef.hide()">Reset</button>
+        <button type="button" class="btn btn-danger" (click)="this.reset()">Close</button>
       </div>
-    `,
-    styleUrls: ['./board.component.css']
+    `
   })
    
-  export class ModalContentComponent implements OnInit {
+  export class ModalContentComponent {
     gameOverMessage?: string;
-    ngOnInit(){
 
+    reset(){
+      location.reload();
     }
     constructor(public bsModalRef: BsModalRef) {}
   }
