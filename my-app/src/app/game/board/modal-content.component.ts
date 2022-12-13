@@ -13,7 +13,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal';
       <p>{{ gameOverMessage }}
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Close</button>
+        <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()">Reset</button>
       </div>
     `
   })
