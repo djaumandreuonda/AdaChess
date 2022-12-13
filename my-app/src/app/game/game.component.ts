@@ -10,6 +10,8 @@ import { type } from '../shared/enums/type.enum';
 import { UpdateBoardService } from '../shared/services/update-board.service';
 import { HelperService } from '../shared/services/helper.service';
 import { AvailableMovesService } from '../shared/services/available-moves.service';
+import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
+import { ModalContentComponent } from './board/modal-content.component';
 
 @Component({
   selector: 'app-game',
@@ -17,6 +19,7 @@ import { AvailableMovesService } from '../shared/services/available-moves.servic
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit{
+  bsModalRef?: BsModalRef;
   board:Board; 
   turn:colour;
   state:moveState;
@@ -25,17 +28,22 @@ export class GameComponent implements OnInit{
   prevCoordinate:Coordinate;
   possibleMoves:Coordinate[];
 
-  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService: HelperService ){
+  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService: HelperService, private _modalService: BsModalService ){
+  }
+
+  ngOnInit(): void {
+    this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)});
+    console.log('game component init');
+    this.resetGame();
+  }
+
+  resetGame(){
     this.possibleMoves = [];
     this.board = new Board(); 
     this.blackKingPos = new Coordinate(0,4);
     this.whiteKingPos = new Coordinate(7,4);
     this.turn = colour.WHITE;
     this.state = moveState.AWAIT;
-  }
-
-  ngOnInit(): void {
-    this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
 
   selectPiece(piecePos:Coordinate):boolean{
@@ -100,8 +108,25 @@ export class GameComponent implements OnInit{
     }
   }
 
-  isInCheckMate(kingPos:Coordinate, board:Board):boolean{
+  openGameOverModal(kingPos:Coordinate, board:Board) { // rename this
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
+    if(this.isInStaleMate(kingPos, board, turnColour) && this.kingInCheck(kingPos, turnColour, board)){
+      this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
+      this.bsModalRef.content.gameOverMessage = this._helperService.getOppositeColour(turnColour) + " has won by checkmate!";
+      this._modalService.onHide.subscribe(x => {
+        this.resetGame();
+      })
+    }
+    else if(this.isInStaleMate(kingPos, board, turnColour)){
+      this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
+      this.bsModalRef.content.gameOverMessage = "Stalemate detected! No player wins ";
+      this._modalService.onHide.subscribe(x => {
+        this.resetGame();
+      })
+    }
+  }
+
+  isInStaleMate(kingPos:Coordinate, board:Board, turnColour:colour):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentBox = board.boxes[i][j];
@@ -115,7 +140,6 @@ export class GameComponent implements OnInit{
         }
       }
     }
-    alert(`${this._helperService.getOppositeColour(turnColour)} is the winner!`)
     // if the player can't make any valid move, return true
     return true;
   }
@@ -131,7 +155,7 @@ export class GameComponent implements OnInit{
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
         currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos;
-        this.isInCheckMate(currentTurnKingPos, this.board);
+        this.openGameOverModal(currentTurnKingPos, this.board);
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
@@ -147,3 +171,4 @@ export class GameComponent implements OnInit{
     }
   }
 }
+
