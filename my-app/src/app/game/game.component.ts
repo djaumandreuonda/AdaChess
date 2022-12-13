@@ -38,13 +38,6 @@ export class GameComponent implements OnInit{
     this.state = moveState.AWAIT;
   }
 
-  openModalWithComponent() {
-    const initialState: ModalOptions = {
-    };
-    this.bsModalRef = this._modalService.show(ModalContentComponent, initialState);
-    this.bsModalRef.content.closeBtnName = 'Close';
-  }
-
   ngOnInit(): void {
     this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)})
   }
@@ -111,8 +104,15 @@ export class GameComponent implements OnInit{
     }
   }
 
-  isInCheckMate(kingPos:Coordinate, board:Board):boolean{
+  openModalWithComponent(kingPos:Coordinate, board:Board) {
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
+    if(this.isInStaleMate(kingPos, board, turnColour) && this.kingInCheck(kingPos, turnColour, board)){
+      this.bsModalRef = this._modalService.show(ModalContentComponent);
+      this.bsModalRef.content.gameOverMessage = turnColour + " has won by checkmate!";
+    }
+  }
+
+  isInStaleMate(kingPos:Coordinate, board:Board, turnColour:colour):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentBox = board.boxes[i][j];
@@ -126,7 +126,6 @@ export class GameComponent implements OnInit{
         }
       }
     }
-    alert(`${this._helperService.getOppositeColour(turnColour)} is the winner!`)
     // if the player can't make any valid move, return true
     return true;
   }
@@ -142,7 +141,7 @@ export class GameComponent implements OnInit{
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
         currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos;
-        this.isInCheckMate(currentTurnKingPos, this.board);
+        this.openModalWithComponent(currentTurnKingPos, this.board);
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await
