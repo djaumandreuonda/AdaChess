@@ -1,9 +1,9 @@
-.box{
+.board-box{
     display: inline-block;
     text-align: center;
     vertical-align: middle;
 }
-.row{
+.board-row{
     display: block;
     height: 50px;
 }

@@ -10,13 +10,17 @@ import { type } from '../shared/enums/type.enum';
 import { UpdateBoardService } from '../shared/services/update-board.service';
 import { HelperService } from '../shared/services/helper.service';
 import { AvailableMovesService } from '../shared/services/available-moves.service';
+import { BsModalService, BsModalRef, ModalOptions } from 'ngx-bootstrap/modal';
+import { ModalContentComponent } from './board/modal-content.component';
 
 @Component({
+  // eslint-disable-next-line @angular-eslint/component-selector
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
 export class GameComponent implements OnInit{
+  bsModalRef?: BsModalRef;
   board:Board; 
   turn:colour;
   state:moveState;
@@ -25,13 +29,20 @@ export class GameComponent implements OnInit{
   prevCoordinate:Coordinate;
   possibleMoves:Coordinate[];
 
-  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService: HelperService ){
+  constructor(public _availableMoves: AvailableMovesService, public _updateBoardService: UpdateBoardService, public _helperService: HelperService, private _modalService: BsModalService ){
     this.possibleMoves = [];
     this.board = new Board(); 
     this.blackKingPos = new Coordinate(0,4);
     this.whiteKingPos = new Coordinate(7,4);
     this.turn = colour.WHITE;
     this.state = moveState.AWAIT;
+  }
+
+  openModalWithComponent() {
+    const initialState: ModalOptions = {
+    };
+    this.bsModalRef = this._modalService.show(ModalContentComponent, initialState);
+    this.bsModalRef.content.closeBtnName = 'Close';
   }
 
   ngOnInit(): void {
@@ -147,3 +158,5 @@ export class GameComponent implements OnInit{
     }
   }
 }
+
+
