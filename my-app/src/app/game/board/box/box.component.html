@@ -1,31 +1,6 @@
 <div class="chessBox" (click)="sendCoordinates(box.coordinate)"
 [ngStyle]="{
-'background-color': box.colour}"
->
-<div *ngIf="box.getPiece()?.type=='pawn'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-pawn']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-pawn']" size="3x"></fa-icon>
-</div>
-<div *ngIf="box.getPiece()?.type=='bishop'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-bishop']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-bishop']" size="3x"></fa-icon>
-</div>
-<div *ngIf="box.getPiece()?.type=='rook'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-rook']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-rook']" size="3x"></fa-icon>
-</div>
-<div *ngIf="box.getPiece()?.type=='knight'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-knight']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-knight']" size="3x"></fa-icon>
-</div>
-<div *ngIf="box.getPiece()?.type=='king'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-king']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-king']" size="3x"></fa-icon>
-</div>
-<div *ngIf="box.getPiece()?.type=='queen'">
-    <fa-icon *ngIf="box.getPiece().colour=='white'" [icon]="['far', 'chess-queen']" size="3x"></fa-icon>
-    <fa-icon *ngIf="box.getPiece().colour=='black'" [icon]="['fas', 'chess-queen']" size="3x"></fa-icon>
-</div>
-
+'background-color': box.colour}">
+<fa-icon *ngIf="!(box.isEmpty())"  [icon]="[pieceColour, pieceType]" size="3x"></fa-icon>
 </div>
 
