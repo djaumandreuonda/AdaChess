@@ -112,15 +112,18 @@ export class GameComponent implements OnInit{
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
     if(this.isInStaleMate(kingPos, board, turnColour) && this.kingInCheck(kingPos, turnColour, board)){
       this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
-      this.bsModalRef.content.gameOverMessage = turnColour + " has won by checkmate!";
+      this.bsModalRef.content.gameOverMessage = this._helperService.getOppositeColour(turnColour) + " has won by checkmate!";
       this._modalService.onHide.subscribe(x => {
         this.resetGame();
       })
     }
-
-    console.log('open game over modal');
-
-
+    else if(this.isInStaleMate(kingPos, board, turnColour)){
+      this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
+      this.bsModalRef.content.gameOverMessage = "Stalemate detected! No player wins ";
+      this._modalService.onHide.subscribe(x => {
+        this.resetGame();
+      })
+    }
   }
 
   isInStaleMate(kingPos:Coordinate, board:Board, turnColour:colour):boolean{
