@@ -4,13 +4,13 @@ import { Piece } from "./piece.model";
 
 export class Box {
     coordinate: Coordinate;
+    occupied: boolean;
     colour: colour;
-    piece: Piece;
+    piece: Piece[];
     constructor(colour: colour, coordinate:Coordinate) {
+        this.occupied = false;
         this.coordinate = coordinate;
         this.colour = colour;
-    }
-    setPiece(piece:Piece){
-        this.piece = piece; 
+        this.piece = []; 
     }
 }
