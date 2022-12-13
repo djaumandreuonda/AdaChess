@@ -8,5 +8,5 @@ import { Board } from '../../shared/model/board.model';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent {
-  @Input() board:Board;
+  @Input() board: Board;
 }

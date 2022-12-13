@@ -3,12 +3,17 @@
     text-align: center;
     vertical-align: middle;
 }
-.board-row{
+
+.board-row {
     display: block;
-    height: 50px;
+    height: 6vw;
+    min-height: 50px;
+    max-height: 100px;
 }
-.board{
+
+.board {
     border: 5px solid gray;
     width: fit-content;
     height: fit-content;
+    min-width: 410px;
 }
