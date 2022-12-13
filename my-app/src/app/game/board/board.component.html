@@ -1,5 +1,5 @@
 <div *ngIf="board.boxes" class="board">
-    <div class="row" *ngFor="let row of board.boxes; index as i;">
-            <app-box class="box" *ngFor="let box of row; index as j;" [box]="board.boxes[i][j]"></app-box>
+    <div class="board-row" *ngFor="let row of board.boxes; index as i;">
+        <app-box class="board-box" *ngFor="let box of row; index as j;" [box]="board.boxes[i][j]"></app-box>
     </div>
 </div>
