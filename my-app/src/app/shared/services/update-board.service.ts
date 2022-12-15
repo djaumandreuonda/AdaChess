@@ -9,13 +9,13 @@ import { Coordinate } from 'src/app/shared/model/coordinate.model';
 export class UpdateBoardService {
   public gameMoveUpdate: Subject<Coordinate> = new Subject();
 
-  movePiece(oldCoordinate: Coordinate, coordinate: Coordinate, board: Board): Board {
+  movePiece(oldCoordinate: Coordinate, newCoordinate: Coordinate, board: Board): Board {
     let pieceMoved = board.boxes[oldCoordinate.x][oldCoordinate.y].getPiece();
     board.boxes[oldCoordinate.x][oldCoordinate.y].emptyBox();
-    if (board.boxes[coordinate.x][coordinate.y].getPiece()) {
-      board.boxes[coordinate.x][coordinate.y].emptyBox();
+    if (board.boxes[newCoordinate.x][newCoordinate.y].getPiece()) {
+      board.boxes[newCoordinate.x][newCoordinate.y].emptyBox();
     }
-    board.boxes[coordinate.x][coordinate.y].setPiece(pieceMoved);
+    board.boxes[newCoordinate.x][newCoordinate.y].setPiece(pieceMoved);
 
     return board;
   }
