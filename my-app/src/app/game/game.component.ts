@@ -33,7 +33,6 @@ export class GameComponent implements OnInit{
 
   ngOnInit(): void {
     this._updateBoardService.gameMoveUpdate.subscribe(coordinate => {this.registerCoordinate(coordinate)});
-    console.log('game component init');
     this.resetGame();
   }
 
@@ -75,7 +74,8 @@ export class GameComponent implements OnInit{
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = board.boxes[i][j].getPiece(); // This is the piece we are looking at 
         if(currentPiece?.colour == this._helperService.getOppositeColour(kingColour)){  // if the piece is an enemy piece and is not a pawn
-          if(this._helperService.isInArray(this._availableMoves.getMoves(board, board.boxes[i][j].coordinate, true), kingPos)){ // if the king position is in the array of possible moves then return true as the king would be in check 
+          if(this._helperService.isInArray(this._availableMoves.getMoves(board, board.boxes[i][j].coordinate, true), kingPos)){ // if the king position 
+            // is in the array of possible moves then return true as the king would be in check 
             return true
           }
         }
@@ -108,25 +108,27 @@ export class GameComponent implements OnInit{
     }
   }
 
-  openGameOverModal(kingPos:Coordinate, board:Board) { // rename this
-    let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
-    if(this.isInStaleMate(kingPos, board, turnColour) && this.kingInCheck(kingPos, turnColour, board)){
+  checkGameOver(kingPos:Coordinate, board:Board) {
+    let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour; 
+    if(this.isInStaleMate(kingPos, turnColour, board) && this.kingInCheck(kingPos, turnColour, board)){
+      // if the player is in checkmate, show the game over modal with a message of who won
       this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
       this.bsModalRef.content.gameOverMessage = this._helperService.getOppositeColour(turnColour) + " has won by checkmate!";
-      this._modalService.onHide.subscribe(x => {
+      this._modalService.onHide.subscribe(x => { // if user tries to hide the modal, reset the game variables and board
         this.resetGame();
       })
     }
-    else if(this.isInStaleMate(kingPos, board, turnColour)){
+    else if(this.isInStaleMate(kingPos, turnColour, board)){
+      // if the player is in stalemate, show the game over modal with a message
       this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
-      this.bsModalRef.content.gameOverMessage = "Stalemate detected! No player wins ";
-      this._modalService.onHide.subscribe(x => {
+      this.bsModalRef.content.gameOverMessage = "Stalemate detected! No player wins";
+      this._modalService.onHide.subscribe(x => { // if user tries to hide the modal, reset the game variables and board
         this.resetGame();
       })
     }
   }
 
-  isInStaleMate(kingPos:Coordinate, board:Board, turnColour:colour):boolean{
+  isInStaleMate(kingPos:Coordinate, turnColour:colour, board:Board,):boolean{
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentBox = board.boxes[i][j];
@@ -155,7 +157,7 @@ export class GameComponent implements OnInit{
         this.pawnTransform();
         this.turn = this._helperService.getOppositeColour(this.turn); // switch turns
         currentTurnKingPos = this.turn == colour.WHITE? this.whiteKingPos : this.blackKingPos;
-        this.openGameOverModal(currentTurnKingPos, this.board);
+        this.checkGameOver(currentTurnKingPos, this.board);
       }
       this.possibleMoves = []; // empty the possible moves
       this.state = moveState.AWAIT; // change state to await

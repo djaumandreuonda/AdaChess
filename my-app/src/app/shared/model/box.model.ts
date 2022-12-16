@@ -5,7 +5,7 @@ import { Subject } from "rxjs";
 
 export class Box {
 
-    public boxUpdate: Subject<boolean> = new Subject();
+    public boxUpdate: Subject<boolean> = new Subject(); // subject (observer pattern)
 
     coordinate: Coordinate;
     colour: colour;
@@ -26,13 +26,13 @@ export class Box {
     setPiece(piece:Piece){
         if(this.isEmpty()){
             this.pieceArr.push(piece);
-            this.boxUpdate.next(true);
+            this.boxUpdate.next(true); // notify a change occured to box model
         }
     }
     emptyBox(){
         if(!(this.isEmpty())){
             this.pieceArr.pop();
-            this.boxUpdate.next(true);
+            this.boxUpdate.next(true); // notify a change occured to box model
         }
     }
 }

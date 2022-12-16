@@ -21,8 +21,8 @@ export class BoxComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateValues()
-    this.box.boxUpdate.subscribe(x => {
-      this.updateValues()
+    this.box.boxUpdate.subscribe(x => { // if there is a change detected in subject
+      this.updateValues() // update the values about the subject
     })
   }
 
