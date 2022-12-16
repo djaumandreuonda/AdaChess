@@ -99,7 +99,7 @@ export class AvailableMovesService {
     let rook = board.boxes[piecePos.x][piecePos.y].getPiece();
 
     try {
-      for (let i = 1; i < 8; i++) { // how can I make it so I don't depend on the eight?
+      for (let i = 1; i < 8; i++) { 
         let currentBox = board.boxes[piecePos.x-i][piecePos.y]
         if(currentBox.getPiece()?.colour == rook.colour){
           break; 
@@ -159,7 +159,7 @@ export class AvailableMovesService {
     let bishop = board.boxes[piecePos.x][piecePos.y].getPiece();
     
     try {
-      for (let i = 1; i < 8; i++) { // how can I make it so I don't depend on the eight?
+      for (let i = 1; i < 8; i++) {
         let currentBox = board.boxes[piecePos.x+i][piecePos.y+i]
         if(currentBox.getPiece()?.colour == bishop.colour){
           break; 
