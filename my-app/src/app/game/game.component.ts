@@ -60,7 +60,7 @@ export class GameComponent implements OnInit{
         kingPos = move; // update the king position to the pos it will move to
       }
       this._updateBoardService.movePiece(piecePos, move, mockBoard); // simulate the move that is trying to be replicated 
-      if(this.kingInCheck(kingPos, this.turn, mockBoard)){ // would my king be in check as a result of a move? 
+      if(this.kingInCheck(kingPos, mockBoard)){ // would my king be in check as a result of a move? 
          // You are not allowed to make move that would cause your king to be in jeapordy
         return false
       }
@@ -69,7 +69,8 @@ export class GameComponent implements OnInit{
     return false
   }
 
-  kingInCheck(kingPos:Coordinate, kingColour:colour, board:Board):boolean{
+  kingInCheck(kingPos:Coordinate, board:Board):boolean{
+    let kingColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour;
     for (var i: number = 0; i < 8; i++) {
       for (var j: number = 0; j < 8; j++) {
         let currentPiece = board.boxes[i][j].getPiece(); // This is the piece we are looking at 
@@ -110,7 +111,7 @@ export class GameComponent implements OnInit{
 
   checkGameOver(kingPos:Coordinate, board:Board) {
     let turnColour = board.boxes[kingPos.x][kingPos.y].getPiece().colour; 
-    if(this.isInStaleMate(kingPos, turnColour, board) && this.kingInCheck(kingPos, turnColour, board)){
+    if(this.isInStaleMate(kingPos, turnColour, board) && this.kingInCheck(kingPos, board)){
       // if the player is in checkmate, show the game over modal with a message of who won
       this.bsModalRef = this._modalService.show(ModalContentComponent, Object.assign({},{class: 'modal-sm left'}));
       this.bsModalRef.content.gameOverMessage = this._helperService.getOppositeColour(turnColour) + " has won by checkmate!";
