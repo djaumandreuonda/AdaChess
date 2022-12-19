@@ -49,48 +49,69 @@ export class AvailableMovesService {
     return killerMoves;
   }
 
-  private getPawnMoves(piecePos:Coordinate, board:Board):Coordinate[]{   
+  private getPawnMoves(piecePos:Coordinate, board:Board):Coordinate[]{  
+    let nextPosX; // stores the next vertical position, negative or positive depending on colour 
+    let initRowX; // stores the initial row for pawn (black or white)
     let possibleMoves:Coordinate[] = []; 
     let pawn = board.boxes[piecePos.x][piecePos.y].getPiece();
-
-    if(!piecePos){
-        return possibleMoves; 
+    if (pawn.colour == "white"){ // assigns values to the variables depending on colour
+      nextPosX = -1; // pawn will move up if white
+      initRowX = 6; // assigns the initial row for white pawns
     }
-    try{
-      switch(pawn.colour) { 
-        case "black": { 
-            if(!(board.boxes[piecePos.x+1][piecePos.y].getPiece())){ // if the next box is not occupied
-                possibleMoves.push(board.boxes[piecePos.x+1][piecePos.y].coordinate);
-                if (piecePos.x == 1 && !(board.boxes[piecePos.x+2][piecePos.y].getPiece())) {
-                  possibleMoves.push(board.boxes[piecePos.x+2][piecePos.y].coordinate)
-                }
-            }
-            if(board.boxes[piecePos.x+1][piecePos.y+1]?.getPiece() && board.boxes[piecePos.x+1][piecePos.y+1]?.getPiece().colour == "white"){
-                  possibleMoves.push(board.boxes[piecePos.x+1][piecePos.y+1].coordinate)
-            } 
-            if(board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece() && board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece().colour == "white"){
-                  possibleMoves.push(board.boxes[piecePos.x+1][piecePos.y-1].coordinate)
-            }
-           break; 
-        } 
-        case "white": { 
-            if(!(board.boxes[piecePos.x-1][piecePos.y].getPiece())){
-                possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y].coordinate);
-                if (piecePos.x == 6 && !(board.boxes[piecePos.x-2][piecePos.y].getPiece())) {
-                  possibleMoves.push(board.boxes[piecePos.x-2][piecePos.y].coordinate)
-                }
-            }
-            if(board.boxes[piecePos.x-1][piecePos.y-1]?.getPiece() && board.boxes[piecePos.x-1][piecePos.y-1]?.getPiece().colour == "black"){
-                  possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y-1].coordinate)
-            } 
-            if(board.boxes[piecePos.x-1][piecePos.y+1]?.getPiece() && board.boxes[piecePos.x-1][piecePos.y+1]?.getPiece().colour == "black"){
-                  possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y+1].coordinate)
-            }
-           break; 
-        } 
-      }    
-    } catch(err){}
+    else{
+      nextPosX = 1;
+      initRowX = 1;
+    }
+    if((board.boxes?.[piecePos.x+nextPosX]?.[piecePos.y]?.isEmpty())){ // if the next box is empty
+      possibleMoves.push(board.boxes[piecePos.x+nextPosX][piecePos.y].coordinate); // store coordinate as possible move
+      if (piecePos.x == initRowX && (board.boxes?.[piecePos.x+(2*nextPosX)]?.[piecePos.y]?.isEmpty())) { // if the current position of pawn is on the initial row and the next coordinate is empty
+        possibleMoves.push(board.boxes[piecePos.x+(2*nextPosX)][piecePos.y].coordinate) // // store coordinate as possible move 
+      }
+    }
     
+    // if(board.boxes?.[piecePos.x+nextPosX]?.[piecePos.y+1]?.getPiece() && board.boxes[piecePos.x+nextPosX][piecePos.y+1]?.getPiece().colour == "white"){
+    //     possibleMoves.push(board.boxes[piecePos.x+1][piecePos.y+1].coordinate)
+    // } 
+    // if(board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece() && board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece().colour == "white"){
+    //     possibleMoves.push(board.boxes[piecePos.x+nextPosX][piecePos.y-1].coordinate)
+    // }
+
+
+    // try{
+    //   switch(pawn.colour) { 
+    //     case "black": { 
+    //         if(!(board.boxes[piecePos.x+next][piecePos.y].getPiece())){ // if the next box is not occupied
+    //             possibleMoves.push(board.boxes[piecePos.x+next][piecePos.y].coordinate);
+    //             if (piecePos.x == initRow && !(board.boxes[piecePos.x+2][piecePos.y].getPiece())) {
+    //               possibleMoves.push(board.boxes[piecePos.x+2*next][piecePos.y].coordinate)
+    //             }
+    //         }
+    //         if(board.boxes[piecePos.x+1][piecePos.y+1]?.getPiece() && board.boxes[piecePos.x+1][piecePos.y+1]?.getPiece().colour == "white"){
+    //               possibleMoves.push(board.boxes[piecePos.x+1][piecePos.y+1].coordinate)
+    //         } 
+    //         if(board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece() && board.boxes[piecePos.x+1][piecePos.y-1]?.getPiece().colour == "white"){
+    //               possibleMoves.push(board.boxes[piecePos.x+next][piecePos.y-1].coordinate)
+    //         }
+    //        break; 
+    //     } 
+    //     case "white": { 
+    //         if(!(board.boxes[piecePos.x-1][piecePos.y].getPiece())){
+    //             possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y].coordinate);
+    //             if (piecePos.x == 6 && !(board.boxes[piecePos.x-2][piecePos.y].getPiece())) {
+    //               possibleMoves.push(board.boxes[piecePos.x-2][piecePos.y].coordinate)
+    //             }
+    //         }
+    //         if(board.boxes[piecePos.x-1][piecePos.y-1]?.getPiece() && board.boxes[piecePos.x-1][piecePos.y-1]?.getPiece().colour == "black"){
+    //               possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y-1].coordinate)
+    //         } 
+    //         if(board.boxes[piecePos.x-1][piecePos.y+1]?.getPiece() && board.boxes[piecePos.x-1][piecePos.y+1]?.getPiece().colour == "black"){
+    //               possibleMoves.push(board.boxes[piecePos.x-1][piecePos.y+1].coordinate)
+    //         }
+    //        break; 
+    //     } 
+    //   }    
+    // } catch(err){}
+    console.log(possibleMoves)
     return possibleMoves;
   }
 
