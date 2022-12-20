@@ -137,7 +137,7 @@ export class GameComponent implements OnInit{
           let availableMoves = this._availableMoves.getMoves(board, currentBox.coordinate); // get the moves possible for this piece 
           for(let i in availableMoves){ // iterate through each move
             if(this.isValidMove(currentBox.coordinate, availableMoves[i], availableMoves, kingPos, board)){ // if any move is valid
-              return false; // player isn't in check mate
+              return false; // player isn't in stalemate
             }
           }
         }

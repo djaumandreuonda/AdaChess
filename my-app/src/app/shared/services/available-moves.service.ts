@@ -42,8 +42,8 @@ export class AvailableMovesService {
   private filterPawnKillerMoves(pawnPos:Coordinate, possibleMoves:Coordinate[]):Coordinate[]{
     let killerMoves:Coordinate[] = []
     for(let i in possibleMoves){
-      if(possibleMoves[i].y != pawnPos.y){
-        killerMoves.push(possibleMoves[i])
+      if(possibleMoves[i].y != pawnPos.y){ // if move diagonal to the pawn position
+        killerMoves.push(possibleMoves[i]) // add to the killer move list 
       }
     }
     return killerMoves;
@@ -204,11 +204,12 @@ export class AvailableMovesService {
     let possibleMoves:Coordinate[] = []; 
     let knight = board.boxes[piecePos.x][piecePos.y].getPiece();
 
-    for (let i = -2; i < 3; i++){
-      for (let j = -2; j < 3; j++){
-        if(Math.pow(i, 2) + Math.pow(j, 2) == 5){
-          if(board.boxes?.[piecePos.x + i]?.[piecePos.y + j]?.isEmpty() || board.boxes?.[piecePos.x + i]?.[piecePos.y + j]?.getPiece()?.colour == this._helperService.getOppositeColour(knight.colour)){
-            possibleMoves.push(board.boxes[piecePos.x + i][piecePos.y + j].coordinate)
+    for (let i = -2; i < 3; i++){ // range of addition/substraction to x 
+      for (let j = -2; j < 3; j++){ // range of addition/substraction to y
+        if(Math.pow(i, 2) + Math.pow(j, 2) == 5){ // 
+          // if at that position there is no piece, or there is an enemy piece
+          if(board.boxes?.[piecePos.x + i]?.[piecePos.y + j]?.isEmpty() || board.boxes?.[piecePos.x + i]?.[piecePos.y + j]?.getPiece()?.colour == this._helperService.getOppositeColour(knight.colour)){  
+            possibleMoves.push(board.boxes[piecePos.x + i][piecePos.y + j].coordinate); // store coordinate at possible move
           }
         }
       }
