@@ -167,9 +167,11 @@ export class GameComponent implements OnInit{
 
     if(this.state == moveState.AWAIT){ // if player hasn't clicked on piece
       if(this.selectPiece(coordinate)){ // check it is trying to click a piece 
+        console.log("changing status")
         this.state = moveState.ATTEMPTMOVE; // change status, player is trying to move a piece
         this.prevCoordinate = coordinate; // once status has been changed, the previous move needs to be reference to know what piece the player is trying to move
         this.possibleMoves = this._availableMoves.getMoves(this.board, coordinate);
+        console.log(this.possibleMoves)
       }
     }
   }
