@@ -1,6 +1,5 @@
-
-<div *ngIf="this.board.boxes" class="board">
-    <div class="row" *ngFor="let row of this.board.boxes; index as i;">
-            <app-box (coordinate)="registerCoordinate($event)" class="box" *ngFor="let box of row; index as j;" [box]="this.board.boxes[i][j]"></app-box>
+<div *ngIf="board.boxes" class="board">
+    <div class="board-row" *ngFor="let row of board.boxes; index as i;">
+        <app-box class="board-box" *ngFor="let box of row; index as j;" [box]="board.boxes[i][j]"></app-box>
     </div>
 </div>

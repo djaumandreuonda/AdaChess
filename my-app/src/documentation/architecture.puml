@@ -1,0 +1,83 @@
+@startuml AdaChess
+
+title AdaChess
+
+package View <<Rectangle>> {
+  class BoardComponent {}
+  class BoxComponent {}
+}
+
+package Model <<Rectangle>> {
+  enum colour {
+    + white
+    + black
+  }
+  
+  enum moveState {
+    + await
+    + attemptmove
+  }
+  
+  enum type {
+    + pawn
+    + rook
+    + bishop
+    + knight
+    + queen 
+    + king
+  }
+  
+  class Coordinate {
+    +Int x
+    +Int y
+  }
+  
+  class Box {
+    coordinate: Coordinate
+    colour: colour
+    private pieceArr: Piece[]
+    +isEmpty()
+    +getPiece()
+    +setPiece(piece: Piece)
+    +emptyBox()
+  }
+  
+  class Board{
+    +Box[][] boxes
+    +populateBoard()
+  }
+  
+  class Piece {
+    +Colour:colour
+    +Type:type
+  }
+}
+
+package Controller <<Rectangle>> {
+  class UpdateBoard << Singleton >> {}
+  class AvailableMoves << Singleton >> {}
+  class Game {
+    +Board board 
+    +colour turn
+    +state moveState
+    +Coordinate[] availableMoves
+    +isValidMove(Coordiante piece, Coordinate move, Coordiante kingPos, Board board)
+    +isInCheck(Coordinate piece)
+    +selectPiece(Coordinate piece)
+    +isIncheck(Coordinate kingPos, Board:board)
+    +getMoves(Piece piece)
+    +Move(Piece piece, Coordinate move)
+  }
+}
+
+
+Board *-- Box
+Box *-- Coordinate
+Box *-- Piece
+Box *-- colour
+Piece *-- colour
+Piece *-- type
+BoardComponent --> BoxComponent
+
+
+@enduml

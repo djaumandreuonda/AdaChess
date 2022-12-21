@@ -1,6 +1,7 @@
 import { Piece } from "./piece.model";
 import { Coordinate } from "./coordinate.model";
 import { Box } from "./box.model";
+
 import { colour } from "src/app/shared/enums/colour.enum";
 import { type } from "src/app/shared/enums/type.enum";
 
@@ -20,7 +21,7 @@ export class Board {
         this.populateWhite(); 
         this.populateBlack();
     } 
-    populateWhite(){
+    private populateWhite(){
         for(var i: number = 0; i < 8; i++){
             this.boxes[6][i].setPiece(new Piece(colour.WHITE, type.pawn));
         }
@@ -42,7 +43,7 @@ export class Board {
             }
         }
     }
-    populateBlack(){
+    private populateBlack(){
         for(var i: number = 0; i < 8; i++){
             this.boxes[1][i].setPiece(new Piece(colour.BLACK, type.pawn));
         }

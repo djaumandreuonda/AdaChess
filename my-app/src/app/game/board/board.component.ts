@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
-import { Board } from './model/board.model';
-import { Coordinate } from './model/coordinate.model';
+import { Component, Input } from '@angular/core';
+
+import { Board } from '../../shared/model/board.model';
 
 @Component({
   selector: 'app-board',
@@ -8,9 +8,5 @@ import { Coordinate } from './model/coordinate.model';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent {
-  @Input() board:Board;
-  @Output() coordinate = new EventEmitter<Coordinate>();
-  registerCoordinate(coordinate:Coordinate){
-    this.coordinate.emit(coordinate);
-  }
+  @Input() board: Board;
 }

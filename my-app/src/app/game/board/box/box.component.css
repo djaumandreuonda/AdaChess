@@ -1,0 +1,16 @@
+.chessBox {
+    min-width: 50px;
+    min-height: 50px;
+
+    max-width: 90px;
+    max-height: 90px;
+
+    /* Responsive width */
+    width: 6vw;
+    height: 6vw;
+
+    /* Align icons center */ 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
