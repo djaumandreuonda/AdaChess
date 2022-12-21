@@ -16,13 +16,11 @@ This includes:
   - E.g., if in check, the player should only be able to move pieces that would stop their king from being in check
   - E.g., if in checkmate or stalemate, the game should stop and inform who won
 
-[Include the challenges of what I've done. Such as the problems with pawn and the architecture of the solution and how it evolved]
-
 ### Approach to solution
 
 #### Design - UML diagram
 
-![](RackMultipart20221216-1-pdx6ip_html_905b030094c19928.png)
+![](RackMultipart20221221-1-zqz06c_html_905b030094c19928.png)
 
 This was the initial solution for the chess board. As in a real chess game there are clearly objects, I initially thought of taking an OOP approach to solve the problem of making chess into a game application.
 
@@ -51,9 +49,9 @@ This approach is considered an agile approach in which each MVP will be broken i
 
 My approach to QA will be to conduct some unit testing using angular testing framework. After creating services/controllers on angular I will prioritise testing the most important methods and will attempt to test as much code as I can, especially those functions that cannot be tested visually (by playing the game).
 
-Extra:
+In addition to this:
 
-- I will not commit any code that contains any bug or that isn't finish. I will always commit code that is clean, same with merging branches
+- I will not commit any code that contains any bug or that isn't finished. I will always commit code that is clean, the same applies to pull requests
 - I will test any new function implemented visually
 
 #### First MVP requirements
@@ -108,7 +106,7 @@ I broke down the entire application into epics, stories and tasks. Meaning that 
 
 #### The board
 
-![](RackMultipart20221216-1-pdx6ip_html_263a884b872bcc94.png)
+![](RackMultipart20221221-1-zqz06c_html_263a884b872bcc94.png)
 
 Both JIRA and Trello were considered to create a sprint board, but after testing both applications I decided that Trello was a better match for my project as it was much more lightweight and easier to maintain than JIRA. JIRA could have been better for project that are much bigger than a chess game.
 
@@ -116,12 +114,12 @@ Trello's lists served the purpose to keep track of the state of stories. As seen
 
 #### Epic example
 
-A ![](RackMultipart20221216-1-pdx6ip_html_a175829bd0a7a820.png) s mentioned earlier the whole application was broken down into epics, once all epics are completed, the full application has been completed.
+A ![](RackMultipart20221221-1-zqz06c_html_a175829bd0a7a820.png) s mentioned earlier the whole application was broken down into epics, once all epics are completed, the full application has been completed.
 
 Each epic holds a description of the requirements to complete the epic. It also has a list of possible stories it will need to complete said requirements, including a link to each story.
 _Story example_
 
-![](RackMultipart20221216-1-pdx6ip_html_28ced41e43680bfe.png)Each story will be created from the list of stories in the corresponding epic.
+![](RackMultipart20221221-1-zqz06c_html_28ced41e43680bfe.png)Each story will be created from the list of stories in the corresponding epic.
 
 A story will represent a requirement needed by an end user. This story was born by the ability for a player to move a piece on the board.
 
@@ -137,7 +135,7 @@ The next big task was to develop the pawn type. Although I initially thought of 
 
 #### Adoption and use of good standards
 
-![](RackMultipart20221216-1-pdx6ip_html_6d0a870c0fbd14f8.png)B ![](RackMultipart20221216-1-pdx6ip_html_c241ab9e37f97c13.png) efore moving on to the next stage, I heavily tested the logic for the models. This is because I wanted to ensure there were not issues related to my model when trying to implement this solution in Angular and testing if I could achieve what was proposed for this project using this framework. These are some examples of unit tests performed:
+![](RackMultipart20221221-1-zqz06c_html_6d0a870c0fbd14f8.png)B ![](RackMultipart20221221-1-zqz06c_html_c241ab9e37f97c13.png) efore moving on to the next stage, I heavily tested the logic for the models. This is because I wanted to ensure there were not issues related to my model when trying to implement this solution in Angular and testing if I could achieve what was proposed for this project using this framework. These are some examples of unit tests performed:
 
 To further ensure quality in my application, I moved to angular testing (on the next MVP) and made it a habit. I also made the following a habit:
 
@@ -147,7 +145,7 @@ To further ensure quality in my application, I moved to angular testing (on the 
 
 ### First MVP
 
-![](RackMultipart20221216-1-pdx6ip_html_7db19bed7f7c788f.png)
+![](RackMultipart20221221-1-zqz06c_html_7db19bed7f7c788f.png)
 
 #### Displaying the board
 
@@ -155,20 +153,20 @@ The application was moved to angular so that the game could be seen. I chose ang
 
 To start with the display, I first started from the smallest component, the box. I did some tests feeding a box model from the board component and the box would have to display a box according to this information. This was the first attempt:
 
-![](RackMultipart20221216-1-pdx6ip_html_20bd04a395975bfb.png)
+![](RackMultipart20221221-1-zqz06c_html_20bd04a395975bfb.png)
 
 This was done using an angular pattern called "input" which allows a developer to pass data from a parent component to its child component(s) via the html, making it very easy to implement and suitable for my architecture.
 
-![](RackMultipart20221216-1-pdx6ip_html_37203b9697866514.png)Then I used an angular loop through iterate through each box in the board component and try to display them. To ensure this was being done via the input parameter, I also displayed the coordinate of the box:
+![](RackMultipart20221221-1-zqz06c_html_37203b9697866514.png)Then I used an angular loop through iterate through each box in the board component and try to display them. To ensure this was being done via the input parameter, I also displayed the coordinate of the box:
 
-![](RackMultipart20221216-1-pdx6ip_html_2ebabeae335e3e02.png)
+![](RackMultipart20221221-1-zqz06c_html_2ebabeae335e3e02.png)
  I then used some CSS classes to structure the boxes into a chess board
 
 The piece component was then created. It was a class that inherited from the piece model and there was meant to be one per type but only the pawn was created. Upon instantiation it would use font awesome icons to display itself and by using angular input it would display the correct colour. However, this solution was erased as it created a lot of complexity. If I wanted to pursue this architecture, I would've needed to create 6 components (1 per piece type) and have them implement logic to understand where they were on the board and were to move (following my first architecture diagram). This is a bad practice as it would heavily combine a controller and a visual component as well as having to communicate data that could've been kept at the level of the game controller rather than passing it down.
 
 I simplified this solution and decided that box would display icons depending on the data given to it by its parent:
 
-T ![](RackMultipart20221216-1-pdx6ip_html_8665aeba19e0ebdb.png) his HTML displays different icons depending on the values stored in box model by using "ngIf" which behaves as an if statement for HTML. If the box mode is empty the application won't display a piece inside the box, and it won't return an error.
+T ![](RackMultipart20221221-1-zqz06c_html_8665aeba19e0ebdb.png) his HTML displays different icons depending on the values stored in box model by using "ngIf" which behaves as an if statement for HTML. If the box mode is empty the application won't display a piece inside the box, and it won't return an error.
 
 This is a good solution as it prevents the usage of 6 extra components and displays different pieces depending on the data given to it.
 
@@ -184,16 +182,16 @@ This issue was fixed on later MVPs, but it will be explained here for convenienc
 
 The html was simplified to a single ngif statement. Instead of hard coding the data the font awesome statement needed I made it an attribute of the class.
 
-![](RackMultipart20221216-1-pdx6ip_html_6b39938e3072a3c2.png)
+![](RackMultipart20221221-1-zqz06c_html_6b39938e3072a3c2.png)
 
 This was done with the help of Angular's "Observable", a design pattern very similar to the observer pattern, in which a subject maintains a list of their observers and notifies them of state changes. These changes can be used to trigger functions or events.
 
 In this example, I created a subject in the box model, this subject value is updated every time there is a change to the box model. For example, when a box is emptied, or a piece is added to it:
  This change of event will notify the box component (the object responsible for the view of this model) which will update the values of the display every time a change is detected. Instead of "if statements" constantly checking for changes on the box model to decide what piece to display, this solution allows an update on the box (of a single html line) only when a change happens on the box model the component is currently displaying, by updating its attributes and giving them to a font awesome icon which will change depending on the piece held in data.
 
-![](RackMultipart20221216-1-pdx6ip_html_4225c157bddc7473.png)This is the box model (subject):
+![](RackMultipart20221221-1-zqz06c_html_4225c157bddc7473.png)This is the box model (subject):
 
-![](RackMultipart20221216-1-pdx6ip_html_cfd3fcfb70a231d4.png)This is the box component (obvserver):
+![](RackMultipart20221221-1-zqz06c_html_cfd3fcfb70a231d4.png)This is the box component (obvserver):
 
 #### Emitting coordinates and a new architecture
 
@@ -201,21 +199,21 @@ After having a board displayed with correct pieces, I wanted to take it a step f
 
 This is the algorithm I designed for the game component to follow:
 
-![](RackMultipart20221216-1-pdx6ip_html_e2afe18ddb133266.png)
+![](RackMultipart20221221-1-zqz06c_html_e2afe18ddb133266.png)
 
-[Explain new architecture here. Separation of concerns for board, and making game instantiate board]
+![](RackMultipart20221221-1-zqz06c_html_f3d3b797f717de33.png)
 
-Started thinking about the architecture much more. Created an MVC architecture for chess and prepared my main controller (game) with some methods to build a foundation. This allowed me to test the logic in a very simplified way which allowed me to see further attributes of the class I didn't figure out by just drawing the architecture diagram (e.g., possible moves attribute, holding the previous coordinate to keep track of the piece etc). This was useful to create a "backbone" for the application that allowed me to better understand the functions that were missing.
+At this stage a new architecture was created, based on an MVC architecture, which separates classes into different concerns. The board model only stores data about the board, it doesn't have any logic or any view component to it. The view classes should only display data based on a model, if the model changes (maybe due to controller class changes) the view should also change, and the only logic these classes should hold should be regarding display. Finally, the controller classes should only carry out logic on the board component, such as validating moves, and they should not be concerned with the display of data.
 
 To communicate coordinates between components I used the inverse of "Inputs" called "Outputs", which is a way to send data from a child component to its parent component. When clicking on the box's html, a function, "sendCoordinate()" would emit the box's coordinates to its parent component:
 
-![](RackMultipart20221216-1-pdx6ip_html_999936b84acb3c6c.png)
+![](RackMultipart20221221-1-zqz06c_html_999936b84acb3c6c.png)
 
 The parent would "listen" to this via their HTML which would then call a function to register the coordinates, which would console log them:
 
-![](RackMultipart20221216-1-pdx6ip_html_d42234cc7468bf20.png)
+![](RackMultipart20221221-1-zqz06c_html_d42234cc7468bf20.png)
 
-![](RackMultipart20221216-1-pdx6ip_html_97fce8a0e018cad6.png)
+![](RackMultipart20221221-1-zqz06c_html_97fce8a0e018cad6.png)
 
 The board would then pass this information to its parent component, the game controller, which could now listen to player's inputs.
 
@@ -231,22 +229,22 @@ The game component was the component that would ultimately use this information 
 
 To solve this problem, I used the observer pattern. This time, I made "updateBoard" the subject:
 
-![](RackMultipart20221216-1-pdx6ip_html_e55f8a8b0e783174.png)
+![](RackMultipart20221221-1-zqz06c_html_e55f8a8b0e783174.png)
 
 Update board service is an external component (not part of the grandparent, parent, child flow) and thus any component can subscribe to the "gameMoveUpdate" attribute.
 
 If a box was clicked, it would send its coordinates to this subject:
 
-![](RackMultipart20221216-1-pdx6ip_html_9720f8ecab848cf6.png)
+![](RackMultipart20221221-1-zqz06c_html_9720f8ecab848cf6.png)
 
 On the other hand, game component would listen to any changes and consume the value changed and run some logic:
- ![](RackMultipart20221216-1-pdx6ip_html_304b8b486ed8f49d.png)
+ ![](RackMultipart20221221-1-zqz06c_html_304b8b486ed8f49d.png)
 
 This code is listening to coordinates from the subject and calling registerCoordinate function to start the flow chart logic displayed earlier on this section. Depending on the state of game, it would consider coordinates as clicking a piece or an attempt to move a piece.
 
 This is what the MVP looked like after this change:
 
-![](RackMultipart20221216-1-pdx6ip_html_cf04ac8f234f100c.png)
+![](RackMultipart20221221-1-zqz06c_html_cf04ac8f234f100c.png)
 
 ### Second MVP
 
@@ -270,11 +268,7 @@ Instead, after researching a variety of solutions, I decided to use angular serv
 
 This singleton would hold all the different algorithms for each piece movements and return a list of available moves (coordinates) based on the coordinate of said piece and a board model.
 
-![](RackMultipart20221216-1-pdx6ip_html_27b10166cb9afcac.png)
-
-[Should I mention how I solved the issue with the pawn? And improve algorithms?]
-
-This is how the finalised MVP looked like:
+![](RackMultipart20221221-1-zqz06c_html_27b10166cb9afcac.png)
 
 #### Update board service
 
@@ -282,7 +276,7 @@ I created another service to update a board model with a move that has been vali
 
 It takes an old coordinate, a new coordinate and a board. It moves any piece located on the old location to the new location and returns the updated board model.
 
-![](RackMultipart20221216-1-pdx6ip_html_97afb56bf1ca5178.png)
+![](RackMultipart20221221-1-zqz06c_html_97afb56bf1ca5178.png)
 
 #### Validating moves
 
@@ -290,7 +284,7 @@ Currently the only validations for moves are checking piece can take that move b
 
 A piece that was seemed very easy to make was the king. In theory, it can move in all directions but just one box at a time as shown in the picture below:
 
-![](RackMultipart20221216-1-pdx6ip_html_92a273c54c3dcc6c.png)However, in chess there are more rules to the movement of the king. A king cannot move to a place it would be in check, it is an illegal move. Meaning that my program cannot let a player, even if it is a foolish move, move a king to a position in which it would get eaten/killed.
+![](RackMultipart20221221-1-zqz06c_html_92a273c54c3dcc6c.png)However, in chess there are more rules to the movement of the king. A king cannot move to a place it would be in check, it is an illegal move. Meaning that my program cannot let a player, even if it is a foolish move, move a king to a position in which it would get eaten/killed.
 
 In addition to this, I added extra validation to prevent other illegal moves such as:
 
@@ -301,7 +295,7 @@ To check if the king would get in check after doing a move (or is in check alrea
 
 To do this, a new service was introduced, the helper service, designed with methods to fulfil with the DRY principle as they are used frequently throughout the application. This service has 3 functions:
 
-A ![](RackMultipart20221216-1-pdx6ip_html_5edcdda1db91e8c6.png) function to switch the colour from white to black and vice versa, mainly used to switch the colour when getting the enemy's moves (e.g. getOppositeColour(this.turn).
+A ![](RackMultipart20221221-1-zqz06c_html_5edcdda1db91e8c6.png) function to switch the colour from white to black and vice versa, mainly used to switch the colour when getting the enemy's moves (e.g. getOppositeColour(this.turn).
 
 Another method was created to check if a coordinate was inside an array of coordinates, used to check if king position is in the array of possible enemy moves, or checking if a coordinate is in the array of possible moves for that piece.
 
@@ -309,7 +303,7 @@ A final method was created to deeply clone a board's model object. This was born
 
 With the help of all these services, the final isValid function method was born:
 
-![](RackMultipart20221216-1-pdx6ip_html_aaf903ff4c0b4fab.png)
+![](RackMultipart20221221-1-zqz06c_html_aaf903ff4c0b4fab.png)
 
 It first checks if a piece can take the move it is trying to take. Returns false automatically if this is not the case.
 
@@ -317,7 +311,7 @@ Then, using the help of the clone board function, it clones the board model to c
 
 During this period, there were a lot of logic errors. Mainly caused by not being rigorout enough when testing functions. After being stuck for long periods of time, I decided to thoroughly test the helper functions because if they didn't work as expected by themselves (unit tests) then they could cause a lot of issues which were going to be hard to debug.
 
-A ![](RackMultipart20221216-1-pdx6ip_html_c5671b93c8e98aa7.png) fter creating unit tests for each function, I caught a lot of logic errors on the functions. For example, isInArray always returned false as it was not comparing the objects correctly, this was fixed by comparing the attributes of the object rather than the object itself.
+A ![](RackMultipart20221221-1-zqz06c_html_c5671b93c8e98aa7.png) fter creating unit tests for each function, I caught a lot of logic errors on the functions. For example, isInArray always returned false as it was not comparing the objects correctly, this was fixed by comparing the attributes of the object rather than the object itself.
 
 #### End game conditions
 
@@ -335,17 +329,17 @@ The solution I came up for is to create a function that would check if there a s
 
 To do this, the function goes through all the pieces for the player whose turn is occurring and checks if they are valid moves, if a valid move is detected then it automatically returns a false, saving checks on the rest of the pieces, which improves performance. If there are no valid moves left, it must mean there is a stalemate, so it returns a true.
 
-![](RackMultipart20221216-1-pdx6ip_html_95e3e0b460c5dd0.png)
+![](RackMultipart20221221-1-zqz06c_html_95e3e0b460c5dd0.png)
 
 Combined with "isKingInCheck" function, I could now identify a stalemate and a checkmate.
 
 To officially finish the game, I needed a modal that would display once a checkmate or stalemate was detected and show the correct information. The best solution I found was to use a bootstrap modal on its own angular component. This way I could pass information to it, such as the display message or even other data such as game stats.
 
-![](RackMultipart20221216-1-pdx6ip_html_e6e4ce4dc1883a06.png)
+![](RackMultipart20221221-1-zqz06c_html_e6e4ce4dc1883a06.png)
 
 This is the function that opens the modal:
 
-![](RackMultipart20221216-1-pdx6ip_html_65c56ddb70c1a086.png)
+![](RackMultipart20221221-1-zqz06c_html_65c56ddb70c1a086.png)
 
 ##### Refactoring the solution
 
@@ -365,7 +359,7 @@ However, the biggest example of this smell was on my box model class. In chess a
 
 To fix this, I made the array private and only allowed access through the box's methods like so:
 
-T ![](RackMultipart20221216-1-pdx6ip_html_879f9e93b56d2f1.png) his was also the main reason I needed to use observable solution mentioned for the box display, as angular's ngOnChanges (a feature that picks up on any change done on the model) was not working. This was because the changes were occurring through the methods so ngOnChanges couldn't pick this up.
+T ![](RackMultipart20221221-1-zqz06c_html_879f9e93b56d2f1.png) his was also the main reason I needed to use observable solution mentioned for the box display, as angular's ngOnChanges (a feature that picks up on any change done on the model) was not working. This was because the changes were occurring through the methods so ngOnChanges couldn't pick this up.
 
 ### Opportunities to grow
 
