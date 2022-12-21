@@ -20,7 +20,7 @@ This includes:
 
 #### Design - UML diagram
 
-![](RackMultipart20221221-1-zqz06c_html_905b030094c19928.png)
+![]([first](https://github.com/djaumandreuonda/AdaChess/blob/main/Pictures/firstArchitecture.png))
 
 This was the initial solution for the chess board. As in a real chess game there are clearly objects, I initially thought of taking an OOP approach to solve the problem of making chess into a game application.
 
